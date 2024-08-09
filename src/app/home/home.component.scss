@@ -1,0 +1,10 @@
+.home-container {
+  padding: 20px; /* Ensure some padding at the top */
+  opacity: 0;
+  transition: opacity 1s ease-in-out; /* Transition for fading in */
+  margin-top: 50px; /* Ensures the text isn't right at the top edge */
+}
+
+.home-container.visible {
+  opacity: 1; /* Fade in to fully visible */
+}

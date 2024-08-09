@@ -1,0 +1,20 @@
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  transition: opacity 1s ease-in-out; /* Transition for fading out */
+  opacity: 1; /* Initial opacity */
+  position: fixed; /* Keep it fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Make sure it appears on top of other content */
+  overflow: hidden; /* Disable scrolling */
+}
+
+.loading-container.hidden {
+  opacity: 0; /* Fade out to transparency */
+  pointer-events: none; /* Prevent interaction during the transition */
+}

@@ -1,13 +1,28 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [CommonModule, RouterModule],  // Import RouterModule and CommonModule here
 })
-export class AppComponent {
-  title = 'auzi-front';
+export class AppComponent implements OnInit {
+  redirected = false; // Add this property to avoid the error
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.hideGifAfterDelay();
+  }
+
+  hideGifAfterDelay(): void {
+    setTimeout(() => {
+      this.redirected = true;
+      this.router.navigate(['/home']);
+    }, 3000); // 3 seconds delay before hiding the GIF and redirecting to home
+  }
 }
