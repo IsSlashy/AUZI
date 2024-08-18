@@ -1,4 +1,15 @@
 <div class="home-container" [ngClass]="{ 'visible': isVisible }">
-  <h1>{{ title }}</h1>
-  <p>This is the main content page after the loading screen.</p>
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1>Work where adventure becomes home.</h1>
+      <p>Embark on a journey where work and discovery unite.</p>
+    </div>
+    <app-filter></app-filter> <!-- Filter component inside hero section -->
+  </div>
+
+  <div class="next-section">
+    <!-- Content of the next section -->
+    <h2>Explore Your Next Adventure</h2>
+    <p>Discover new opportunities around the world.</p>
+  </div>
 </div>

@@ -1,10 +1,139 @@
 .home-container {
-  padding: 20px; /* Ensure some padding at the top */
+  padding: 0;
   opacity: 0;
-  transition: opacity 1s ease-in-out; /* Transition for fading in */
-  margin-top: 50px; /* Ensures the text isn't right at the top edge */
-}
+  transition: opacity 1s ease-in-out;
+  margin: 0;
+  font-family: 'Proxima Nova', Arial, sans-serif;
 
-.home-container.visible {
-  opacity: 1; /* Fade in to fully visible */
+  .hero-section {
+    background-image: url('https://4kwallpapers.com/images/walls/thumbs_3t/1169.jpg');
+    background-size: cover;
+    background-position: center top;
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    margin-left: 0;
+    margin-right: 0; /* Supprimez les marges latérales */
+    margin-top: 0; /* Supprimez les marges du haut */
+    margin-bottom: 0; /* Supprimez les marges du bas */
+  }
+
+  .hero-content {
+    color: #fff;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 1.5rem;
+      margin-top: 10px;
+    }
+  }
+
+  .filter-container {
+    position: absolute;
+    bottom: -80px; /* Adjust this value to control overlap */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 1200px;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 10;
+  }
+
+  .tab-section {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: -50px; /* Adjust to overlay on the hero section */
+    width: 80%; /* Adjust width to be similar to the example */
+    max-width: 1200px; /* Set a maximum width */
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px; /* Slightly rounded corners for a modern look */
+    z-index: 10; /* Ensure it overlays the hero image */
+
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      border-bottom: 2px solid #ddd;
+
+      .tab {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: color 0.3s;
+        font-family: 'Proxima Nova', Arial, sans-serif;
+
+        &.active {
+          border-bottom: 3px solid #007bff;
+          color: #007bff;
+        }
+      }
+    }
+
+    .tab-content {
+      padding: 20px;
+      text-align: center;
+
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .form {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+
+        select, .find-trip-btn {
+          padding: 10px;
+          font-size: 1rem;
+          font-family: 'Proxima Nova', Arial, sans-serif;
+        }
+
+        .find-trip-btn {
+          background-color: #007bff;
+          color: white;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          padding: 10px 20px;
+          border-radius: 4px;
+
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+      }
+    }
+  }
+
+  .next-section {
+    margin-top: 100px; /* Ensure there's enough space above the next section */
+    padding: 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+
+  &.visible {
+    opacity: 1; /* Fade in to fully visible */
+  }
 }

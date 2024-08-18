@@ -1,0 +1,102 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  backdrop-filter: blur(5px); /* Floutage de l'arrière-plan */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Assurez-vous que la popup est au-dessus de tout */
+
+  .popup-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+
+      .option {
+        text-align: center;
+        flex: 1;
+        margin: 0 10px;
+        transition: transform 0.3s ease-in-out; /* Smooth transition for the zoom effect */
+
+        img {
+          width: 80px; /* Increase this value to make the image larger */
+          height: auto;
+          margin-bottom: 10px;
+          transition: transform 0.3s ease-in-out; /* Smooth transition for the zoom effect */
+        }
+
+        h3 {
+          margin-bottom: 10px;
+        }
+
+        p {
+          font-size: 14px;
+          margin-bottom: 15px;
+        }
+
+        button {
+          background-color: #007bff;
+          color: #ffffff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #0056b3;
+          }
+
+          &.disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+          }
+        }
+
+        /* Hover effect */
+        &:hover {
+          transform: scale(1.1); /* Zoom in the entire option container */
+        }
+
+        &:hover img {
+          transform: scale(1.2); /* Zoom in the image even more */
+        }
+
+        /* Reset the zoom effect when the hover ends */
+        &:not(:hover) {
+          transform: scale(1); /* Reset to original size */
+        }
+
+        &:not(:hover) img {
+          transform: scale(1); /* Reset image to original size */
+        }
+      }
+    }
+  }
+}

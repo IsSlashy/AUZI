@@ -1,5 +1,9 @@
-<div class="loading-container" [ngClass]="{ 'hidden': redirected }">
-  <img src="https://i.ibb.co/mbB5RK2/Auzi.gif" alt="Loading..." />
+<div class="loading-container" [ngClass]="{ 'hidden': !isLoading }">
+  <img src="https://i.postimg.cc/v85Qfsfw/Auzi-4.gif" alt="Loading..." />
 </div>
 
+<!-- Include the navbar -->
+<app-navbar></app-navbar>
+
+<!-- Main content area where routes will be displayed -->
 <router-outlet></router-outlet>

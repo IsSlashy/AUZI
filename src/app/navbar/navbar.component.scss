@@ -1,0 +1,86 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Proxima Nova', Arial, sans-serif;
+  box-sizing: border-box;
+
+  .navbar-left {
+    .navbar-logo {
+      width: 120px;
+      height: auto;
+    }
+  }
+
+  .navbar-middle {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    .navbar-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+
+      li {
+        position: relative;
+
+        a {
+          text-decoration: none;
+          color: #333;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          font-family: 'Proxima Nova', Arial, sans-serif;
+          font-size: 0.9rem;
+
+          span {
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+
+    .navbar-icons {
+      display: flex;
+      align-items: center;
+      gap: 20px; /* Espacement ajusté entre les icônes */
+
+      a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+
+        img {
+          width: 22px; /* Taille uniforme pour toutes les icônes */
+          height: 22px;
+        }
+      }
+    }
+
+    .navbar-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 8px 20px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+      font-family: 'Proxima Nova', Arial, sans-serif;
+      font-size: 0.9rem;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}

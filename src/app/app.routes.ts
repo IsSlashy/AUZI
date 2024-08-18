@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 export const routes: Routes = [
-  { path: '', component: AppComponent }, // Loading screen as the first route
-  { path: 'home', component: HomeComponent }, // Home page route
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirige vers home par défaut
+  { path: 'home', component: HomeComponent },
+  { path: 'navbar', component: NavbarComponent }
 ];

@@ -5,16 +5,21 @@
   width: 100vw;
   height: 100vh;
   background-color: #ffffff;
-  transition: opacity 1s ease-in-out; /* Transition for fading out */
-  opacity: 1; /* Initial opacity */
-  position: fixed; /* Keep it fixed to cover the entire viewport */
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; /* Make sure it appears on top of other content */
-  overflow: hidden; /* Disable scrolling */
-}
+  z-index: 1000;
+  overflow: hidden;
 
-.loading-container.hidden {
-  opacity: 0; /* Fade out to transparency */
-  pointer-events: none; /* Prevent interaction during the transition */
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  img {
+    width: 700px;  /* Set the desired width */
+    height: auto;  /* Maintain aspect ratio */
+  }
 }

@@ -1,0 +1,26 @@
+<div *ngIf="isOpen" @fade class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closePopup()">✕</button>
+    <h2>Get in touch with us</h2>
+    <div class="options">
+      <div class="option">
+        <img src="https://i.ibb.co/kxXRL1Z/02d8c951-440e-4108-8fd1-8a50d62ae64c-removebg-preview.png" alt="Live Chat Icon">
+        <h3>Live chat with us</h3>
+        <p>If you prefer tapping, our helpful Work & Travel Experts are eager and ready to help with any of your questions.</p>
+        <button>Start live chat</button>
+      </div>
+      <div class="option">
+        <img src="https://i.ibb.co/QfgJzW1/f7c589f9-b5e1-4c24-9717-e97cb5f27d73-removebg-preview.png" alt="Give Us a Ring Icon">
+        <h3>Give us a ring</h3>
+        <p>Want to talk about it? So do we. When we're not sleeping our friendly and knowledgeable team are standing by to take your call.</p>
+        <button class="disabled">Closed</button>
+      </div>
+      <div class="option">
+        <img src="https://i.ibb.co/m0HZm1F/1ac10f6f-c129-4f65-9162-3a46afcad74e-removebg-preview.png" alt="Schedule Call Back Icon">
+        <h3>Schedule a call back</h3>
+        <p>We can call you at a time that suits. Just click here to book a call back from a Work & Travel Expert, 24 hrs Mon-Fri.</p>
+        <button>Pick a date & time</button>
+      </div>
+    </div>
+  </div>
+</div>
