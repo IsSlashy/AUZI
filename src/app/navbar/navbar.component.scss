@@ -3,11 +3,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 20px;
+  padding: 5px 20px; /* Vous pouvez réduire le padding si nécessaire */
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: 'Proxima Nova', Arial, sans-serif;
   box-sizing: border-box;
+  margin: 0; /* Assurez-vous qu'il n'y a pas de marges */
 
   .navbar-left {
     .navbar-logo {
@@ -24,7 +25,7 @@
     .navbar-links {
       list-style: none;
       display: flex;
-      gap: 20px;
+      gap: 15px;
 
       li {
         position: relative;
@@ -49,11 +50,25 @@
   .navbar-right {
     display: flex;
     align-items: center;
+    gap: 15px; /* Pour espacer les icônes et le select */
+
+    .navbar-select {
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+      transition: border-color 0.3s;
+
+      &:hover {
+        border-color: #007bff;
+      }
+    }
 
     .navbar-icons {
       display: flex;
-      align-items: center;
-      gap: 20px; /* Espacement ajusté entre les icônes */
+      gap: 10px;
 
       a {
         display: flex;
@@ -62,24 +77,9 @@
         color: #333;
 
         img {
-          width: 22px; /* Taille uniforme pour toutes les icônes */
-          height: 22px;
+          width: 20px;
+          height: 20px;
         }
-      }
-    }
-
-    .navbar-btn {
-      background-color: #007bff;
-      color: white;
-      padding: 8px 20px;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background-color 0.3s;
-      font-family: 'Proxima Nova', Arial, sans-serif;
-      font-size: 0.9rem;
-
-      &:hover {
-        background-color: #0056b3;
       }
     }
   }

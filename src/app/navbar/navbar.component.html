@@ -4,23 +4,28 @@
   </div>
   <div class="navbar-middle">
     <ul class="navbar-links">
-      <li><a href="#">Looking for ?<span>&#9662;</span></a></li>
+      <li><a href="#">Looking for<span>&#9662;</span></a></li>
       <li><a href="#">Where <span>&#9662;</span></a></li>
       <li><a href="#">Why <span>&#9662;</span></a></li>
       <li><a href="#">How <span>&#9662;</span></a></li>
     </ul>
   </div>
   <div class="navbar-right">
+    <select class="navbar-select">
+      <option value="">Explore trips</option>
+      <option value="Sydney">Sydney</option>
+      <option value="Melbourne">Melbourne</option>
+      <option value="Gold Coast">Gold Coast</option>
+      <option value="Peth">Perth</option>
+    </select>
     <div class="navbar-icons">
       <a href="#" (click)="chatPopup.openPopup(); $event.preventDefault();">
         <img src="https://i.ibb.co/HGRqwXk/image.png" alt="Live-chat">
       </a>
       <a href="#" class="profile-icon">
         <img src="https://i.ibb.co/Sx4gCJG/noun-profile-5742890.png" alt="Account">
-        <img src="https://i.ibb.co/XYc9kq2/image.png" alt="Account">
       </a>
     </div>
-    <a href="#" class="navbar-btn">Explore trips</a>
   </div>
 </nav>
 

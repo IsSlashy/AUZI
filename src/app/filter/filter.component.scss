@@ -1,76 +1,101 @@
 .filter-container {
-  position: absolute; /* Use absolute positioning for better control */
-  bottom: -100px; /* Adjust this value to move the filter lower or higher */
+  position: absolute;
+  bottom: -200px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%;
+  width: 60%;
   max-width: 1200px;
   background-color: #ffffff;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   z-index: 10;
+}
+.tab.disabled {
+  color: #a0a0a0; /* Gris pour le texte */
+  cursor: not-allowed; /* Change le curseur pour indiquer que l'onglet est désactivé */
 
-  .tabs {
-    display: flex;
-    justify-content: space-around;
-    border-bottom: 2px solid #ddd;
-
-    .tab {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      padding: 10px 20px;
-      cursor: pointer;
-      transition: color 0.3s;
-      font-family: 'Proxima Nova', Arial, sans-serif;
-
-      &.active {
-        border-bottom: 3px solid #007bff;
-        color: #007bff;
-      }
-    }
+  .fa {
+    opacity: 0.5; /* Réduit l'opacité de l'icône pour la griser */
   }
+}
+.tab.active {
+  border-bottom: 3px solid #007bff;
+  color: #007bff;
+}
 
-  .tab-content {
-    padding: 20px;
-    text-align: center;
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 2px solid #ddd;
+}
 
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
+.tab {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: color 0.3s;
+  font-family: 'Proxima Nova', Arial, sans-serif;
+  display: flex;
+  flex-direction: column; /* Stacks icon and text vertically */
+  align-items: center; /* Centers icon and text */
+}
 
-    p {
-      font-size: 1.2rem;
-      color: #666;
-      margin-bottom: 20px;
-    }
+.tab .fa {
+  font-size: 24px; /* Size of the icon */
+  margin-bottom: 5px; /* Space between icon and text */
+}
 
-    .form {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
+.tab-text {
+  font-size: 1rem;
+}
 
-      select, .find-trip-btn {
-        padding: 10px;
-        font-size: 1rem;
-        font-family: 'Proxima Nova', Arial, sans-serif;
-      }
+.tab.active {
+  border-bottom: 3px solid #007bff;
+  color: #007bff;
+}
 
-      .find-trip-btn {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        padding: 10px 20px;
-        border-radius: 4px;
+.tab-content {
+  padding: 20px;
+  text-align: center;
+}
 
-        &:hover {
-          background-color: #0056b3;
-        }
-      }
-    }
-  }
+h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+select,
+.find-trip-btn {
+  padding: 10px;
+  font-size: 1rem;
+  font-family: 'Proxima Nova', Arial, sans-serif;
+}
+
+.find-trip-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.find-trip-btn:hover {
+  background-color: #0056b3;
 }
