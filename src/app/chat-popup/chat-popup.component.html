@@ -1,5 +1,5 @@
-<div *ngIf="isOpen" @fade class="popup-overlay" (click)="closePopup()">
-  <div class="popup-content" (click)="$event.stopPropagation()">
+<div class="popup-overlay" id="popup">
+  <div class="popup-content">
     <button class="close-btn" (click)="closePopup()">✕</button>
     <h2>Get in touch with us</h2>
     <div class="options">
@@ -12,7 +12,12 @@
       <div class="option">
         <img src="https://i.ibb.co/QfgJzW1/f7c589f9-b5e1-4c24-9717-e97cb5f27d73-removebg-preview.png" alt="Give Us a Ring Icon">
         <h3>Give us a ring</h3>
-        <p>Want to talk about it? So do we. When we're not sleeping our friendly and knowledgeable team are standing by to take your call.</p>
+        <p>
+          Want to chat with us? <br>
+          Our partners and team are ready <br>
+          to help you whenever you need. <br>
+          We're just a call away!
+        </p>
         <button class="disabled">Closed</button>
       </div>
       <div class="option">
@@ -24,3 +29,4 @@
     </div>
   </div>
 </div>
+
