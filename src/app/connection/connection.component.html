@@ -1,0 +1,31 @@
+<div class="login-container">
+  <div class="login-left">
+    <div class="login-header">
+      <img src="path/to/your/logo.png" alt="Logo" class="login-logo">
+      <h2>Be more than a tourist.</h2>
+      <p>Discover & join the best real-world travel experiences.</p>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <h2>Welcome to gWorld</h2>
+    <form (ngSubmit)="connect()">
+      <div class="form-group">
+        <label for="email">Email address*</label>
+        <input [(ngModel)]="email" name="email" id="email" type="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password*</label>
+        <input [(ngModel)]="password" name="password" id="password" type="password" required>
+      </div>
+      <div class="form-group">
+        <a href="#">Forgot password?</a>
+      </div>
+      <button type="submit" class="login-btn">Continue</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>© 2024 The Global Work & Travel Co. Privacy Policy Terms Contact Support</p>
+</footer>

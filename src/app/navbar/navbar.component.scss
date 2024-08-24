@@ -64,6 +64,7 @@
       a {
         display: flex;
         align-items: center;
+        cursor: pointer; // Assurer que le curseur change pour indiquer qu'il est cliquable
 
         img {
           max-height: 24px;
@@ -73,6 +74,8 @@
 
       .profile-icon img {
         max-height: 30px;
+        height: auto;
+        cursor: pointer; // S'assurer que l'icône de profil est bien cliquable
       }
     }
   }

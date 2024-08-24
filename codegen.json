@@ -1,0 +1,13 @@
+{
+  "overwrite": true,
+  "schema": "src/GraphQL/schema.graphql",
+  "documents": "src/**/*.graphql",
+  "generates": {
+    "src/generated/graphql.ts": {
+      "plugins": [
+        "typescript",
+        "typescript-operations"
+      ]
+    }
+  }
+}

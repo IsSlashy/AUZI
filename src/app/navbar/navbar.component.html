@@ -12,15 +12,17 @@
   </div>
   <div class="navbar-right">
     <div class="navbar-icons">
-      <a href="#" (click)="chatPopup.openPopup(); $event.preventDefault();">
+      <a href="#" (click)="openPopup(); $event.preventDefault();">
         <img src="https://i.ibb.co/HGRqwXk/image.png" alt="Live-chat">
       </a>
-      <a href="#" class="profile-icon">
+      <!-- Assurer que routerLink est appliqué correctement -->
+      <a routerLink="/profile" class="profile-icon" (click)="onProfileClick()">
         <img src="https://i.ibb.co/Sx4gCJG/noun-profile-5742890.png" alt="Account">
-      </a>
+    </a>
     </div>
   </div>
 </nav>
+
 
 <!-- Inclure le composant de popup -->
 <app-chat-popup #chatPopup></app-chat-popup>
