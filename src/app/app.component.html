@@ -2,8 +2,10 @@
   <img src="https://i.postimg.cc/v85Qfsfw/Auzi-4.gif" alt="Loading..." />
 </div>
 
-<!-- Include the navbar -->
-<app-navbar></app-navbar>
+<!-- Include the navbar only if showNavbar is true -->
+<div *ngIf="showNavbar">
+  <app-navbar></app-navbar>
+</div>
 
 <!-- Main content area where routes will be displayed -->
 <router-outlet></router-outlet>

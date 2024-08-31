@@ -1,29 +1,34 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // Import Router for navigation
-import { ChatPopupComponent } from "../chat-popup/chat-popup.component";
-import { NgIf } from '@angular/common';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ChatPopupComponent } from '../chat-popup/chat-popup.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ChatPopupComponent, NgIf],
+  imports: [ChatPopupComponent],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'] // Corrected to styleUrls
+  styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
-  chatPopup: any;
+export class NavbarComponent implements AfterViewInit {
+  // Use ViewChild to get a reference to the ChatPopupComponent
+  @ViewChild('chatPopup') chatPopup!: ChatPopupComponent;
 
   constructor(private router: Router) {}
 
-  onProfileClick() {
-    console.log('Profile icon clicked'); // This will log when the icon is clicked
+  ngAfterViewInit() {
+    // You can now access the chatPopup instance here if needed
+  }
 
-    // You can navigate to the profile manually using the router if needed
+  onProfileClick() {
+    console.log('Profile icon clicked');
     this.router.navigate(['/profile']);
   }
 
-  // Method to open the chat popup
   openPopup() {
-    this.chatPopup.openPopup(); // Assuming chatPopup has an openPopup method
+    if (this.chatPopup) {
+      this.chatPopup.openPopup();
+    } else {
+      console.error('ChatPopupComponent is not available');
+    }
   }
 }

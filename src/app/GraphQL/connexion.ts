@@ -16,11 +16,10 @@ export const CREATE_USER = gql`
   }
 `;
 
-// Mutation for authenticating a user (login)
 export const AUTHENTICATE_USER = gql`
-  mutation AuthenticateUser($email: String!, $password: String!) {
-    authenticateUser(email: $email, password: $password) {
-      accessToken
+  mutation AuthenticateUser($input: AuthenticateUserInput!) {
+    authenticateUser(input: $input) {
+      token
       user {
         id
         firstName

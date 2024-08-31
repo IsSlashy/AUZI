@@ -4,7 +4,7 @@
   </div>
   <div class="navbar-middle">
     <ul class="navbar-links">
-      <li><a href="#">Looking for<span>&#9662;</span></a></li>
+      <li><a href="#">Looking for <span>&#9662;</span></a></li>
       <li><a href="#">Where <span>&#9662;</span></a></li>
       <li><a href="#">Why <span>&#9662;</span></a></li>
       <li><a href="#">How <span>&#9662;</span></a></li>
@@ -15,14 +15,12 @@
       <a href="#" (click)="openPopup(); $event.preventDefault();">
         <img src="https://i.ibb.co/HGRqwXk/image.png" alt="Live-chat">
       </a>
-      <!-- Assurer que routerLink est appliqué correctement -->
       <a routerLink="/profile" class="profile-icon" (click)="onProfileClick()">
         <img src="https://i.ibb.co/Sx4gCJG/noun-profile-5742890.png" alt="Account">
-    </a>
+      </a>
     </div>
   </div>
 </nav>
-
 
 <!-- Inclure le composant de popup -->
 <app-chat-popup #chatPopup></app-chat-popup>

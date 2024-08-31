@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';  // Import NavbarComponent
@@ -12,12 +12,17 @@ import { NavbarComponent } from './navbar/navbar.component';  // Import NavbarCo
   imports: [CommonModule, RouterModule, NavbarComponent],  // Include NavbarComponent in imports
 })
 export class AppComponent implements OnInit {
-  title(title: any) {
-    throw new Error('Method not implemented.');
-  }
   isLoading = true;
+  showNavbar = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    // Listen to route changes to determine whether to show the navbar
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.showNavbar = !this.router.url.includes('profile'); // Adjust this condition as needed
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.hideGifAfterDelay();

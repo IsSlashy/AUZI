@@ -1,67 +1,64 @@
 import { Component } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { Router } from '@angular/router';
-import { AUTHENTICATE_USER } from '../GraphQL/connexion';
-import { catchError, tap } from 'rxjs/operators';
-import { firstValueFrom, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-
-type AuthResponse = {
-  authenticateUser: {
-    accessToken: string;
-    user: {
-      id: string;
-      firstName: string;
-      lastName: string;
-      email: string;
-    };
-  };
-};
+import { CommonModule } from '@angular/common';
+import { AUTHENTICATE_USER } from '../GraphQL/connexion';  // Assurez-vous que le chemin est correct
 
 @Component({
   selector: 'app-connection',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './connection.component.html',
   styleUrls: ['./connection.component.scss']
 })
 export class ConnectionComponent {
-  email!: string;
-  password!: string;
+  email: string = '';
+  password: string = '';
+  private apolloClient: ApolloClient<any>;
 
-  constructor(private apollo: Apollo, private router: Router) {}
+  constructor(private router: Router) {
+    // Configure Apollo Client
+    this.apolloClient = new ApolloClient({
+      link: new HttpLink({
+        uri: 'http://localhost:5000/graphql',
+        fetchOptions: {
+          mode: 'cors',
+        },
+      }),
+      cache: new InMemoryCache(),
+      connectToDevTools: true, // Permet d'utiliser Apollo DevTools si nécessaire
+    });
+  }
 
   async connect() {
     console.log('Attempting to authenticate with:', this.email, this.password);
+
     try {
-      const result = await firstValueFrom(
-        this.apollo.mutate<AuthResponse>({
-          mutation: AUTHENTICATE_USER,
-          variables: {
+      const result = await this.apolloClient.mutate({
+        mutation: AUTHENTICATE_USER,  // Utilisation de la mutation importée
+        variables: {
+          input: {  // Envoyez les variables en tant qu'objet input
             email: this.email,
             password: this.password,
           },
-        }).pipe(
-          tap(({ data }) => {
-            console.log('Received data:', data);
-            if (data && data.authenticateUser && data.authenticateUser.accessToken) {
-              console.log('Authentication successful, navigating to /admin');
-              localStorage.setItem('access-token', data.authenticateUser.accessToken);
-              this.router.navigate(['/admin']);
-              document.body.classList.add('logged-in');
-            } else {
-              console.error('Authentication failed, no token received.');
-            }
-          }),
-          catchError((error) => {
-            console.error('There was an error during authentication:', error);
-            return of(error);
-          })
-        )
-      );
-      console.log('Authentication result:', result);
+        },
+      });
+
+      console.log('Received data:', result.data);
+
+      if (result.data && result.data.authenticateUser && result.data.authenticateUser.token) {
+        console.log('Authentication successful, navigating to /home');
+        localStorage.setItem('access-token', result.data.authenticateUser.token);
+        alert('Authentication successful! Redirecting to home page.');
+        this.router.navigate(['/home']);
+      } else {
+        console.error('Authentication failed, no token received.');
+        alert('Authentication failed. Please check your credentials and try again.');
+      }
     } catch (error) {
-      console.error('Error during authentication:', error);
+      console.error('There was an error during authentication:', error);
+      alert('An error occurred during authentication. Please try again later.');
     }
   }
 }
