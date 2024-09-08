@@ -1,0 +1,119 @@
+.signup-page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.signup-left {
+  background-image: url('https://4kwallpapers.com/images/walls/thumbs_3t/1169.jpg');
+  background-size: cover;
+  background-position: center;
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  padding: 40px;
+  position: relative;
+}
+
+.signup-logo {
+  max-width: 150px;
+  margin-bottom: 20px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.signup-left h2 {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+.signup-left p {
+  font-size: 1.2rem;
+  color: white;
+  margin-left: 20px;
+}
+
+.signup-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  background-color: white;
+}
+
+.signup-right h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.signup-right form {
+  width: 100%;
+  max-width: 350px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.styled-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.styled-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.signup-btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.signup-btn:hover {
+  background-color: #0056b3;
+}
+
+.login-prompt {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.login-prompt a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.login-prompt a:hover {
+  text-decoration: underline;
+}

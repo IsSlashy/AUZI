@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AUTHENTICATE_USER } from '../GraphQL/connexion';  // Assurez-vous que le chemin est correct
@@ -8,7 +8,7 @@ import { AUTHENTICATE_USER } from '../GraphQL/connexion';  // Assurez-vous que l
 @Component({
   selector: 'app-connection',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './connection.component.html',
   styleUrls: ['./connection.component.scss']
 })

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -12,14 +12,23 @@ import { NavbarComponent } from './navbar/navbar.component';  // Import NavbarCo
   imports: [CommonModule, RouterModule, NavbarComponent],  // Include NavbarComponent in imports
 })
 export class AppComponent implements OnInit {
+  title(title: any) {
+    throw new Error('Method not implemented.');
+  }
+
   isLoading = true;
   showNavbar = true;
 
-  constructor(private router: Router) {
-    // Listen to route changes to determine whether to show the navbar
+  constructor(private router: Router, private renderer: Renderer2) {
+    // Listen to route changes to determine whether to show the navbar and disable scrolling
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showNavbar = !this.router.url.includes('profile'); // Adjust this condition as needed
+        // Hide the navbar on login and register pages
+        this.showNavbar = !(this.router.url.includes('/login') || this.router.url.includes('/register'));
+
+        // Disable scrolling on login and register pages
+        if (this.router.url.includes('/login') || this.router.url.includes('/register')) {
+        }
       }
     });
   }
@@ -31,7 +40,7 @@ export class AppComponent implements OnInit {
   hideGifAfterDelay(): void {
     setTimeout(() => {
       this.isLoading = false;
-      this.router.navigate(['/home']);
+      // Remove navigation to home after loading finishes, user should stay where they navigated
     }, 2600);
   }
 }
