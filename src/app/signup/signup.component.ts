@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { REGISTER_USER } from '../GraphQL/connexion';  // Mutation for registration
@@ -8,7 +8,7 @@ import { REGISTER_USER } from '../GraphQL/connexion';  // Mutation for registrat
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })

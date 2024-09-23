@@ -16,7 +16,8 @@
         <input [(ngModel)]="password" name="password" id="password" type="password" required autocomplete="current-password" class="styled-input">
       </div>
       <div class="form-group">
-        <a href="#">Forgot password?</a>
+        <!-- Link to the Forgot Password page -->
+        <a [routerLink]="['/forgot-password']">Forgot password?</a>
       </div>
       <button type="submit" class="login-btn">Continue</button>
     </form>

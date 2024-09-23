@@ -4,51 +4,90 @@
     <h2>Create your new journey with Auzi</h2>
     <p>Join us and discover unique real-world travel experiences.</p>
   </div>
+
   <div class="signup-right">
     <h2>Create an Account</h2>
     <form (ngSubmit)="signup()">
       <div class="form-group">
         <label for="firstName">First Name*</label>
-        <input [(ngModel)]="firstName" name="firstName" id="firstName" type="text" required class="styled-input">
+        <div class="input-with-icon">
+          <i class="fa fa-user"></i>
+          <input [(ngModel)]="firstName" name="firstName" id="firstName" type="text" required class="styled-input">
+        </div>
       </div>
+
       <div class="form-group">
         <label for="lastName">Last Name*</label>
-        <input [(ngModel)]="lastName" name="lastName" id="lastName" type="text" required class="styled-input">
+        <div class="input-with-icon">
+          <i class="fa fa-user"></i>
+          <input [(ngModel)]="lastName" name="lastName" id="lastName" type="text" required class="styled-input">
+        </div>
       </div>
+
       <div class="form-group">
-        <label for="email">Email address*</label>
-        <input [(ngModel)]="email" name="email" id="email" type="email" required class="styled-input">
+        <label for="email">Email Address*</label>
+        <div class="input-with-icon">
+          <i class="fa fa-envelope"></i>
+          <input [(ngModel)]="email" name="email" id="email" type="email" required class="styled-input">
+        </div>
       </div>
+
       <div class="form-group">
         <label for="password">Password*</label>
-        <input [(ngModel)]="password" name="password" id="password" type="password" required class="styled-input">
+        <div class="input-with-icon">
+          <i class="fa fa-lock"></i>
+          <input [(ngModel)]="password" name="password" id="password" type="password" required class="styled-input">
+        </div>
       </div>
+
       <div class="form-group">
         <label for="confirmPassword">Confirm Password*</label>
-        <input [(ngModel)]="confirmPassword" name="confirmPassword" id="confirmPassword" type="password" required class="styled-input">
+        <div class="input-with-icon">
+          <i class="fa fa-lock"></i>
+          <input [(ngModel)]="confirmPassword" name="confirmPassword" id="confirmPassword" type="password" required class="styled-input">
+        </div>
       </div>
+
       <div class="form-group">
         <label for="address">Address*</label>
-        <input [(ngModel)]="address" name="address" id="address" type="text" required class="styled-input">
+        <div class="input-with-icon">
+          <i class="fa fa-home"></i>
+          <input [(ngModel)]="address" name="address" id="address" type="text" required class="styled-input">
+        </div>
       </div>
+
       <div class="form-group">
         <label for="zipcode">Zipcode*</label>
-        <input [(ngModel)]="zipcode" name="zipcode" id="zipcode" type="text" required class="styled-input">
+        <div class="input-with-icon">
+          <i class="fa fa-map-pin"></i>
+          <input [(ngModel)]="zipcode" name="zipcode" id="zipcode" type="text" required class="styled-input">
+        </div>
       </div>
+
       <div class="form-group">
         <label for="age">Age*</label>
-        <input [(ngModel)]="age" name="age" id="age" type="number" required class="styled-input">
+        <div class="input-with-icon">
+          <i class="fa fa-birthday-cake"></i>
+          <input [(ngModel)]="age" name="age" id="age" type="number" required class="styled-input">
+        </div>
       </div>
+
       <div class="form-group">
         <label for="gender">Gender*</label>
-        <select [(ngModel)]="gender" name="gender" id="gender" required class="styled-input">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
+        <div class="input-with-icon select-with-icon">
+          <i class="fa fa-venus-mars"></i>
+          <select [(ngModel)]="gender" name="gender" id="gender" required class="styled-select">
+            <option value="" disabled selected>Select your gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
       </div>
+
       <button type="submit" class="signup-btn">Create Account</button>
     </form>
+
     <div class="login-prompt">
       <p>Already have an account? <a routerLink="/login">Log in</a></p>
     </div>
