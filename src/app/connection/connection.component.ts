@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AUTHENTICATE_USER } from '../GraphQL/connexion'; 
+import { AUTHENTICATE_USER } from '../GraphQL/connexion';
 
 @Component({
   selector: 'app-connection',
@@ -21,9 +21,9 @@ export class ConnectionComponent {
     // Configure Apollo Client
     this.apolloClient = new ApolloClient({
       link: new HttpLink({
-        uri: 'http://localhost:5000/graphql',
+        uri: 'http://api.auzi.fr/graphql',  // Mise à jour de l'URL pour pointer vers l'API en ligne
         fetchOptions: {
-          mode: 'cors',
+          mode: 'cors',  // Assure que CORS est pris en charge
         },
       }),
       cache: new InMemoryCache(),
