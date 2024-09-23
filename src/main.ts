@@ -9,7 +9,7 @@ import { routes } from './app/app.routes';
 
 function createApollo(httpLink: HttpLink) {
   return {
-    link: httpLink.create({ uri: 'http://localhost:5000/graphql' }), // Assurez-vous que cette URL correspond à celle de votre API
+    link: httpLink.create({ uri: 'http://localhost:5000/graphql' }),
     cache: new InMemoryCache(),
   };
 }

@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AUTHENTICATE_USER } from '../GraphQL/connexion';  // Assurez-vous que le chemin est correct
+import { AUTHENTICATE_USER } from '../GraphQL/connexion'; 
 
 @Component({
   selector: 'app-connection',
@@ -27,7 +27,7 @@ export class ConnectionComponent {
         },
       }),
       cache: new InMemoryCache(),
-      connectToDevTools: true, // Permet d'utiliser Apollo DevTools si nécessaire
+      connectToDevTools: true,
     });
   }
 
