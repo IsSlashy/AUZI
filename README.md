@@ -4,7 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Project Overview
 
-**Auzi** is a web platform designed to assist French expatriates in Australia in easily finding temp job agencies. We streamline the process by comparing French CVs with Australian standards and providing a selection of the best profiles to temp agencies. This simplifies the job search for expatriates while ensuring agencies receive top-tier candidates.  
+**Auzi** is a web platform designed to assist French expatriates in Australia in easily finding temp job agencies. 
+We streamline the process by comparing French CVs with Australian standards and providing a selection of the best profiles to temp agencies. 
+This simplifies the job search for expatriates while ensuring agencies receive top-tier candidates.  
 Additionally, we offer a service to help with completing the necessary paperwork for the Working Holiday Visa (PVT) by working directly with Australian tourism authorities.
 
 ## Development server
