@@ -21,7 +21,7 @@ export class ConnectionComponent {
     // Configure Apollo Client
     this.apolloClient = new ApolloClient({
       link: new HttpLink({
-        uri: 'https://api.auzi.fr/graphql',  // Mise à jour de l'URL pour pointer vers l'API en ligne
+        uri: 'http://api.auzi.fr/graphql',  // Mise à jour de l'URL pour pointer vers l'API en ligne
         fetchOptions: {
           mode: 'cors',  // Assure que CORS est pris en charge
         },
