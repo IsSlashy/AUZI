@@ -65,54 +65,54 @@ export class SignupComponent {
   }
 
   async signup() {
-    // Validation des champs
     if (this.password !== this.confirmPassword) {
       alert('Passwords do not match');
       return;
     }
 
     if (!this.firstName || !this.lastName || !this.email || !this.password ||
-        !this.address || !this.zipcode || this.age === 0 || !this.gender) {
+        !this.address || !this.zipcode || !this.age || !this.gender) {
       alert('Please fill in all required fields');
       return;
     }
 
-    // Préparation des données
-    const signupInput: RegisterUserInput = {
-      firstName: this.firstName.trim(),
-      lastName: this.lastName.trim(),
-      email: this.email.trim(),
-      password: this.password,
-      phoneNumber: this.phoneNumber.trim() || null,
-      address: this.address.trim(),
-      zipcode: this.zipcode.trim(),
-      age: Number(this.age),
-      gender: this.gender.trim()
-    };
-
-    console.log('Attempting to register with input:', signupInput);
+    console.log('Attempting to register with:', {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      phoneNumber: this.phoneNumber,
+      address: this.address,
+      zipcode: this.zipcode,
+      age: this.age,
+      gender: this.gender
+    });
 
     try {
-      // Envoi de la mutation
       const result = await this.apolloClient.mutate({
         mutation: REGISTER_USER,
         variables: {
-          input: signupInput
+          firstName: this.firstName.trim(),
+          lastName: this.lastName.trim(),
+          email: this.email.trim(),
+          password: this.password,
+          phoneNumber: this.phoneNumber.trim() || undefined,
+          address: this.address.trim(),
+          zipcode: this.zipcode.trim(),
+          age: Number(this.age),
+          gender: this.gender.trim()
         }
       });
 
       console.log('Registration response:', result);
 
-      // Gestion du succès
       if (result.data?.registerUser) {
         alert('Registration successful! Redirecting to login page.');
         this.router.navigate(['/login']);
       } else {
-        throw new Error('No data returned from registration');
+        console.error('Registration failed - no data returned');
+        alert('Registration failed. Please try again.');
       }
-
     } catch (error: unknown) {
-      // Gestion des erreurs
       const apolloError = error as ApolloError;
       console.error('Detailed registration error:', {
         message: apolloError.message,
@@ -124,10 +124,7 @@ export class SignupComponent {
         })),
         stack: apolloError.stack
       });
-
-      // Message d'erreur plus descriptif
-      const errorMessage = apolloError.graphQLErrors?.[0]?.message || apolloError.message;
-      alert(`Registration failed: ${errorMessage}`);
+      alert('Registration failed: ' + apolloError.message);
     }
   }
 }
