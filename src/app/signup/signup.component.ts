@@ -22,7 +22,7 @@ interface RegisterUserInput {
   lastName: string;
   email: string;
   password: string;
-  phoneNumber?: string;
+  phoneNumber?: string | null;
   address: string;
   zipcode: string;
   age: number;
@@ -45,7 +45,7 @@ export class SignupComponent {
   phoneNumber: string = '';
   address: string = '';
   zipcode: string = '';
-  age: number = 0;  // Changed from undefined to 0
+  age: number = 0;
   gender: string = '';
 
   private apolloClient: ApolloClient<any>;
@@ -65,47 +65,54 @@ export class SignupComponent {
   }
 
   async signup() {
+    // Validation des champs
     if (this.password !== this.confirmPassword) {
       alert('Passwords do not match');
       return;
     }
 
     if (!this.firstName || !this.lastName || !this.email || !this.password ||
-        !this.address || !this.zipcode || !this.age || !this.gender) {
+        !this.address || !this.zipcode || this.age === 0 || !this.gender) {
       alert('Please fill in all required fields');
       return;
     }
 
-    const input: RegisterUserInput = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
+    // Préparation des données
+    const signupInput: RegisterUserInput = {
+      firstName: this.firstName.trim(),
+      lastName: this.lastName.trim(),
+      email: this.email.trim(),
       password: this.password,
-      phoneNumber: this.phoneNumber || undefined,
-      address: this.address,
-      zipcode: this.zipcode,
+      phoneNumber: this.phoneNumber.trim() || null,
+      address: this.address.trim(),
+      zipcode: this.zipcode.trim(),
       age: Number(this.age),
-      gender: this.gender
+      gender: this.gender.trim()
     };
 
-    console.log('Attempting to register with input:', input);
+    console.log('Attempting to register with input:', signupInput);
 
     try {
+      // Envoi de la mutation
       const result = await this.apolloClient.mutate({
         mutation: REGISTER_USER,
-        variables: { input }
+        variables: {
+          input: signupInput
+        }
       });
 
       console.log('Registration response:', result);
 
+      // Gestion du succès
       if (result.data?.registerUser) {
         alert('Registration successful! Redirecting to login page.');
         this.router.navigate(['/login']);
       } else {
-        console.error('Registration failed - no data returned');
-        alert('Registration failed. Please try again.');
+        throw new Error('No data returned from registration');
       }
+
     } catch (error: unknown) {
+      // Gestion des erreurs
       const apolloError = error as ApolloError;
       console.error('Detailed registration error:', {
         message: apolloError.message,
@@ -117,7 +124,10 @@ export class SignupComponent {
         })),
         stack: apolloError.stack
       });
-      alert('Registration failed: ' + apolloError.message);
+
+      // Message d'erreur plus descriptif
+      const errorMessage = apolloError.graphQLErrors?.[0]?.message || apolloError.message;
+      alert(`Registration failed: ${errorMessage}`);
     }
   }
 }
