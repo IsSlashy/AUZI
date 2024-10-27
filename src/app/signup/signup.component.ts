@@ -3,7 +3,19 @@ import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { REGISTER_USER } from '../GraphQL/connexion';  // Mutation for registration
+import { REGISTER_USER } from '../GraphQL/connexion';
+
+interface GraphQLError {
+  message: string;
+  path?: ReadonlyArray<string | number>;
+  extensions?: Record<string, any>;
+}
+
+interface ApolloError extends Error {
+  graphQLErrors?: readonly GraphQLError[];
+  networkError?: Error | null;
+  extraInfo?: any;
+}
 
 @Component({
   selector: 'app-signup',
@@ -29,9 +41,10 @@ export class SignupComponent {
   constructor(private router: Router) {
     this.apolloClient = new ApolloClient({
       link: new HttpLink({
-        uri: 'http://localhost:5000/graphql',
+        uri: 'https://api-server.auzi.fr/graphql',
         fetchOptions: {
           mode: 'cors',
+          credentials: 'include',
         },
       }),
       cache: new InMemoryCache(),
@@ -45,36 +58,57 @@ export class SignupComponent {
       return;
     }
 
-    console.log('Attempting to register with:', this.email);
+    console.log('Attempting to register with:', {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      phoneNumber: this.phoneNumber,
+      address: this.address,
+      zipcode: this.zipcode,
+      age: this.age,
+      gender: this.gender
+    });
 
     try {
       const result = await this.apolloClient.mutate({
         mutation: REGISTER_USER,
         variables: {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
-          password: this.password,
-          phoneNumber: this.phoneNumber,
-          address: this.address,
-          zipcode: this.zipcode,
-          age: this.age,
-          gender: this.gender,
+          input: {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            password: this.password,
+            phoneNumber: this.phoneNumber,
+            address: this.address,
+            zipcode: this.zipcode,
+            age: this.age,
+            gender: this.gender,
+          },
         },
       });
 
-      console.log('Received data:', result.data);
+      console.log('Registration response:', result);
 
-      if (result.data && result.data.registerUser) {
+      if (result.data?.registerUser) {
         alert('Registration successful! Redirecting to login page.');
         this.router.navigate(['/login']);
       } else {
-        console.error('Registration failed.');
+        console.error('Registration failed - no data returned');
         alert('Registration failed. Please try again.');
       }
-    } catch (error) {
-      console.error('There was an error during registration:', error);
-      alert('An error occurred during registration. Please try again later.');
+    } catch (error: unknown) {
+      const apolloError = error as ApolloError;
+      console.error('Detailed registration error:', {
+        message: apolloError.message,
+        networkError: apolloError.networkError?.message,
+        graphQLErrors: apolloError.graphQLErrors?.map((err: GraphQLError) => ({
+          message: err.message,
+          path: err.path,
+          extensions: err.extensions
+        })),
+        stack: apolloError.stack
+      });
+      alert('Registration failed: ' + apolloError.message);
     }
   }
 }
