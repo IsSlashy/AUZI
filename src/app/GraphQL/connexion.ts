@@ -35,15 +35,15 @@ export const REGISTER_USER = gql`
 
 
 export const AUTHENTICATE_USER = gql`
-mutation AuthenticateUser($input: AuthenticateUserInput!) {
-  authenticateUser(input: $input) {
-    token
-    user {
-      id
-      firstName
-      lastName
-      email
+  mutation AuthenticateUser($input: AuthenticateUserInput!) {
+    authenticateUser(input: $input) {
+      token
+      user {
+        id
+        firstName
+        lastName
+        email
+      }
     }
   }
-}
 `;

@@ -17,6 +17,18 @@ interface ApolloError extends Error {
   extraInfo?: any;
 }
 
+interface RegisterUserInput {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phoneNumber?: string;
+  address: string;
+  zipcode: string;
+  age: number;
+  gender: string;
+}
+
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -33,7 +45,7 @@ export class SignupComponent {
   phoneNumber: string = '';
   address: string = '';
   zipcode: string = '';
-  age: number | undefined;
+  age: number = 0;  // Changed from undefined to 0
   gender: string = '';
 
   private apolloClient: ApolloClient<any>;
@@ -58,33 +70,30 @@ export class SignupComponent {
       return;
     }
 
-    console.log('Attempting to register with:', {
+    if (!this.firstName || !this.lastName || !this.email || !this.password ||
+        !this.address || !this.zipcode || !this.age || !this.gender) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const input: RegisterUserInput = {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
-      phoneNumber: this.phoneNumber,
+      password: this.password,
+      phoneNumber: this.phoneNumber || undefined,
       address: this.address,
       zipcode: this.zipcode,
-      age: this.age,
+      age: Number(this.age),
       gender: this.gender
-    });
+    };
+
+    console.log('Attempting to register with input:', input);
 
     try {
       const result = await this.apolloClient.mutate({
         mutation: REGISTER_USER,
-        variables: {
-          input: {
-            firstName: this.firstName,
-            lastName: this.lastName,
-            email: this.email,
-            password: this.password,
-            phoneNumber: this.phoneNumber,
-            address: this.address,
-            zipcode: this.zipcode,
-            age: this.age,
-            gender: this.gender,
-          },
-        },
+        variables: { input }
       });
 
       console.log('Registration response:', result);
