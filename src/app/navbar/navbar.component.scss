@@ -5,33 +5,75 @@
   padding: 0 20px;
   background-color: #ffffff;
   height: 70px;
+  position: relative;
+  z-index: 1000;
 
   .navbar-left {
-    flex: 0 0 120px; // Espace fixe pour le logo
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 120px;
 
     .navbar-logo {
       max-height: 50px;
       height: auto;
     }
+
+    .burger-menu {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 22px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 15px;
+      z-index: 1001;
+
+      span {
+        width: 100%;
+        height: 2px;
+        background-color: #333;
+        transition: all 0.3s ease;
+      }
+
+      &.active {
+        span {
+          &:first-child {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          &:nth-child(2) {
+            opacity: 0;
+          }
+          &:last-child {
+            transform: rotate(-45deg) translate(6px, -6px);
+          }
+        }
+      }
+    }
   }
 
-  .navbar-middle {
-    flex: 1; // Occupe tout l'espace restant
+  .navbar-content {
     display: flex;
-    justify-content: center;
     align-items: center;
+    flex: 1;
+    justify-content: space-between;
 
-    .navbar-links {
-      list-style: none;
+    .navbar-middle {
+      flex: 1;
       display: flex;
-      gap: 15px;
-      padding: 0;
-      margin: 0;
+      justify-content: center;
 
-      li {
-        a {
+      .navbar-links {
+        list-style: none;
+        display: flex;
+        gap: 15px;
+        padding: 0;
+        margin: 0;
+
+        li a {
           text-decoration: none;
           color: black;
           font-weight: bold;
@@ -49,33 +91,74 @@
         }
       }
     }
+
+    .navbar-right {
+      width: 120px;
+      display: flex;
+      justify-content: flex-end;
+
+      .navbar-icons {
+        display: flex;
+        gap: 10px;
+
+        a {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+
+          img {
+            max-height: 24px;
+            height: auto;
+          }
+
+          &.profile-icon img {
+            max-height: 30px;
+          }
+        }
+      }
+    }
   }
 
-  .navbar-right {
-    flex: 0 0 120px; // Espace fixe pour les icônes
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+  @media (max-width: 768px) {
+    .navbar-left {
+      width: 100%;
 
-    .navbar-icons {
-      display: flex;
-      gap: 10px;
-
-      a {
+      .burger-menu {
         display: flex;
-        align-items: center;
-        cursor: pointer; // Assurer que le curseur change pour indiquer qu'il est cliquable
+      }
+    }
 
-        img {
-          max-height: 24px;
-          height: auto;
+    .navbar-content {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: white;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+      &.open {
+        display: flex;
+      }
+
+      .navbar-middle {
+        width: 100%;
+
+        .navbar-links {
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
         }
       }
 
-      .profile-icon img {
-        max-height: 30px;
-        height: auto;
-        cursor: pointer; // S'assurer que l'icône de profil est bien cliquable
+      .navbar-right {
+        width: 100%;
+        justify-content: center;
+        margin-top: 20px;
       }
     }
   }

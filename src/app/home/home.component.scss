@@ -146,4 +146,49 @@
   &.visible {
     opacity: 1; /* Transition vers un état complètement visible */
   }
+  @media (max-width: 768px) {
+    .hero-section {
+      min-height: 60vh;
+      padding: 20px;
+
+      .hero-content {
+        h1 {
+          font-size: 1.8rem;
+          padding: 0 15px;
+        }
+
+        p {
+          font-size: 1.2rem;
+          padding: 0 15px;
+        }
+      }
+    }
+
+    .filter-container {
+      width: 90%;
+      bottom: -280px;
+      padding: 15px;
+
+      .tabs {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .tab {
+        flex: 1 1 40%;
+        min-width: 120px;
+        padding: 8px;
+      }
+
+      .form {
+        flex-direction: column;
+        gap: 15px;
+
+        select, .find-trip-btn {
+          width: 100%;
+          margin: 0;
+        }
+      }
+    }
+  }
 }

@@ -10,13 +10,17 @@ import { ChatPopupComponent } from '../chat-popup/chat-popup.component';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements AfterViewInit {
-  // Use ViewChild to get a reference to the ChatPopupComponent
   @ViewChild('chatPopup') chatPopup!: ChatPopupComponent;
+  isMenuOpen = false;
 
   constructor(private router: Router) {}
 
   ngAfterViewInit() {
-    // You can now access the chatPopup instance here if needed
+    // Initialization if needed
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   onProfileClick() {
