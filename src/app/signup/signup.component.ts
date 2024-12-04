@@ -53,7 +53,7 @@ export class SignupComponent {
   constructor(private router: Router) {
     this.apolloClient = new ApolloClient({
       link: new HttpLink({
-        uri: 'https://api-server.auzi.fr/graphql',
+        uri: 'https://api.auzi.fr/graphql',
         fetchOptions: {
           mode: 'cors',
           credentials: 'include',

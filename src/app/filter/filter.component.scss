@@ -1,136 +1,245 @@
+// Base variables
+$primary-color: #007bff;
+$hover-color: #0069d9;
+$active-color: #0062cc;
+$border-color: #e0e0e0;
+$disabled-color: #a0a0a0;
+$text-color: #333;
+$border-radius: 6px;
+$transition: all 0.2s ease;
+$box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+$hover-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+$focus-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+
+// Mixins
+@mixin interactive-element {
+  &:hover {
+    border-color: $primary-color;
+    box-shadow: $hover-shadow;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: $focus-shadow;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
 .filter-container {
   position: absolute;
   bottom: -200px;
   left: 50%;
   transform: translateX(-50%);
-  width: 60%;
-  max-width: 1200px;
+  width: 90%;
+  max-width: 1000px;
   background-color: #ffffff;
-  padding: 20px;
+  padding: 1.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-radius: 12px;
   z-index: 10;
+
 
   .tabs {
     display: flex;
     justify-content: space-around;
-    border-bottom: 2px solid #ddd;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
   }
 
   .tab {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: color 0.3s;
-    font-family: 'Proxima Nova', Arial, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: transparent;
+    border: none;
+    color: $text-color;
+    font-family: 'Proxima Nova', Arial, sans-serif;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: $transition;
 
-    &.disabled {
-      color: #a0a0a0;
-      cursor: not-allowed;
+    &.active {
+      color: $primary-color;
+      position: relative;
 
-      .fa {
-        opacity: 0.5;
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: -0.75rem;
+        left: 25%;
+        width: 50%;
+        height: 2px;
+        background: $primary-color;
       }
     }
 
-    &.active {
-      border-bottom: 3px solid #007bff;
-      color: #007bff;
+    &.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .fa {
-      font-size: 24px;
-      margin-bottom: 5px;
+      font-size: 1.5rem;
+      height: 1.5rem;
+      width: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .tab-text {
-      font-size: 1rem;
+      text-align: center;
+      font-size: 0.75rem;
+      line-height: 1.2;
+      white-space: nowrap;
     }
   }
 
   .tab-content {
-    padding: 20px;
-    text-align: center;
+    padding: 0 0.75rem;
+    margin: 0 auto;
+    max-width: 600px;
 
     h2 {
-      font-size: 2rem;
-      margin-bottom: 10px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: $text-color;
+      margin-bottom: 0.5rem;
     }
 
     p {
-      font-size: 1.2rem;
+      font-size: 0.875rem;
       color: #666;
-      margin-bottom: 20px;
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+
+    select {
+      appearance: none;
+      width: 100%;
+      padding: 0.875rem 2.5rem 0.875rem 1rem;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat;
+      background-position: right 1rem center;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      color: $text-color;
+      font-size: 0.9375rem;
+      font-family: 'Proxima Nova', Arial, sans-serif;
+      cursor: pointer;
+      transition: $transition;
+      box-shadow: $box-shadow;
+      @include interactive-element;
     }
 
-    .form {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
+    .find-trip-btn {
+      width: 100%;
+      padding: 0.875rem;
+      background: $primary-color;
+      color: white;
+      border: none;
+      border-radius: $border-radius;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      font-family: 'Proxima Nova', Arial, sans-serif;
+      cursor: pointer;
+      transition: $transition;
+      box-shadow: $box-shadow;
 
-      select,
-      .find-trip-btn {
-        padding: 10px;
-        font-size: 1rem;
-        font-family: 'Proxima Nova', Arial, sans-serif;
+      &:hover {
+        background: $hover-color;
+        box-shadow: $hover-shadow;
+        transform: translateY(-1px);
       }
 
-      .find-trip-btn {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        padding: 10px 20px;
-        border-radius: 4px;
-
-        &:hover {
-          background-color: #0056b3;
-        }
+      &:active {
+        transform: translateY(0);
+        background: $active-color;
       }
     }
   }
 
-  @media (max-width: 768px) {
+  // Tablet styles
+  @media (min-width: 768px) {
+    position: absolute;
+    bottom: -200px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 90%;
-    bottom: -280px;
-    padding: 15px;
+    max-width: 800px;
+    border-radius: 12px;
+    padding: 1.5rem;
 
     .tabs {
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .tab {
-      flex: 1 1 40%;
-      min-width: 120px;
-      padding: 8px;
+      margin: -0.25rem -1.5rem 1.5rem;
+      padding: 0 1.5rem 0.75rem;
+      grid-template-columns: repeat(4, minmax(120px, 1fr));
     }
 
     .tab-content {
+      padding: 0 1rem;
+      max-width: none;
+
       h2 {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
       }
 
       p {
         font-size: 1rem;
       }
+    }
 
-      .form {
-        flex-direction: column;
-        gap: 15px;
-        padding: 0 10px;
+    .form {
+      flex-direction: row;
+      max-width: none;
+      gap: 1rem;
+      padding: 0 1rem;
 
-        select,
-        .find-trip-btn {
-          width: 100%;
-          height: 45px;
-        }
+      select {
+        flex: 1;
+        min-width: 160px;
+        max-width: 200px;
+      }
+
+      .find-trip-btn {
+        width: auto;
+        padding: 0.875rem 2rem;
+      }
+    }
+  }
+
+  // Desktop styles
+  @media (min-width: 1200px) {
+    max-width: 1000px;
+    padding: 2rem;
+
+    .tabs {
+      margin: -0.25rem -2rem 2rem;
+      padding: 0 2rem 0.75rem;
+    }
+
+    .form {
+      justify-content: center;
+      gap: 1.5rem;
+
+      select {
+        max-width: 220px;
       }
     }
   }
