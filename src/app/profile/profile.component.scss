@@ -1,0 +1,162 @@
+.profile-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .profile-header {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 1.8rem;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: #718096;
+      font-size: 1rem;
+    }
+  }
+
+  .alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+
+    &.alert-error {
+      background-color: #fff5f5;
+      color: #c53030;
+      border: 1px solid #feb2b2;
+    }
+
+    &.alert-success {
+      background-color: #f0fff4;
+      color: #2f855a;
+      border: 1px solid #9ae6b4;
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    &.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      color: #4a5568;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+      }
+
+      &.error {
+        border-color: #e53e3e;
+
+        &:focus {
+          box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+        }
+      }
+    }
+
+    .error-message {
+      display: block;
+      color: #e53e3e;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &.btn-primary {
+        background-color: #4299e1;
+        color: white;
+        border: none;
+
+        &:hover:not(:disabled) {
+          background-color: #3182ce;
+        }
+
+        &:disabled {
+          background-color: #a0aec0;
+          cursor: not-allowed;
+        }
+      }
+
+      &.btn-secondary {
+        background-color: white;
+        color: #4299e1;
+        border: 1.5px solid #4299e1;
+
+        &:hover {
+          background-color: #ebf8ff;
+        }
+      }
+    }
+  }
+
+  .spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .form-actions {
+      flex-direction: column-reverse;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -23,9 +23,16 @@
         <a href="#" (click)="openPopup(); $event.preventDefault();">
           <img src="https://i.ibb.co/HGRqwXk/image.png" alt="Live-chat">
         </a>
-        <a routerLink="/profile" class="profile-icon" (click)="onProfileClick()">
-          <img src="https://i.ibb.co/Sx4gCJG/noun-profile-5742890.png" alt="Account">
-        </a>
+        <div class="profile-container">
+          <a href="#" class="profile-icon" (click)="onProfileClick($event)">
+            <img src="https://i.ibb.co/Sx4gCJG/noun-profile-5742890.png" alt="Account">
+          </a>
+          <div class="profile-dropdown" *ngIf="isLoggedIn && isDropdownOpen">
+            <div class="dropdown-item" (click)="navigateToDashboard()">Dashboard</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" (click)="logout()">Déconnexion</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -1,0 +1,60 @@
+<div class="dashboard-container">
+  <div class="dashboard-content">
+    <div class="sidebar">
+      <div class="user-profile">
+        <div class="avatar-container">
+          <img src="" alt="Profile" class="avatar">
+        </div>
+        <h3 class="user-name">Slashy</h3>
+      </div>
+
+      <nav class="section-buttons">
+        <button
+          [class.active]="activeSection === 'profile'"
+          (click)="setActiveSection('profile')"
+          class="nav-button">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </button>
+        <button
+          [class.active]="activeSection === 'settings'"
+          (click)="setActiveSection('settings')"
+          class="nav-button">
+          <i class="fas fa-cog"></i>
+          <span>Paramètres</span>
+        </button>
+        <button
+          [class.active]="activeSection === 'documents'"
+          (click)="setActiveSection('documents')"
+          class="nav-button">
+          <i class="fas fa-file"></i>
+          <span>Documents</span>
+        </button>
+        <button
+          [class.active]="activeSection === 'visa'"
+          (click)="setActiveSection('visa')"
+          class="nav-button">
+          <i class="fas fa-passport"></i>
+          <span>Visa & Immigration</span>
+        </button>
+        <button
+          [class.active]="activeSection === 'preferences'"
+          (click)="setActiveSection('preferences')"
+          class="nav-button">
+          <i class="fas fa-sliders-h"></i>
+          <span>Préférences</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="main-content">
+      <header class="content-header">
+        <h1>{{ activeSection | titlecase }}</h1>
+      </header>
+
+      <div class="content-body">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h1>Mon Profil</h1>
+    <p class="subtitle">Gérez vos informations personnelles</p>
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+    <!-- Messages d'état -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <div class="form-grid">
+      <!-- Prénom -->
+      <div class="form-group">
+        <label for="firstName">Prénom</label>
+        <input
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          [class.error]="isFieldInvalid('firstName')">
+        <span class="error-message" *ngIf="isFieldInvalid('firstName')">
+          {{ getFieldError('firstName') }}
+        </span>
+      </div>
+
+      <!-- Nom -->
+      <div class="form-group">
+        <label for="lastName">Nom</label>
+        <input
+          type="text"
+          id="lastName"
+          formControlName="lastName"
+          [class.error]="isFieldInvalid('lastName')">
+        <span class="error-message" *ngIf="isFieldInvalid('lastName')">
+          {{ getFieldError('lastName') }}
+        </span>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          [class.error]="isFieldInvalid('email')">
+        <span class="error-message" *ngIf="isFieldInvalid('email')">
+          {{ getFieldError('email') }}
+        </span>
+      </div>
+
+      <!-- Téléphone -->
+      <div class="form-group">
+        <label for="phoneNumber">Téléphone</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          formControlName="phoneNumber"
+          [class.error]="isFieldInvalid('phoneNumber')">
+        <span class="error-message" *ngIf="isFieldInvalid('phoneNumber')">
+          {{ getFieldError('phoneNumber') }}
+        </span>
+      </div>
+
+      <!-- Adresse -->
+      <div class="form-group full-width">
+        <label for="address">Adresse</label>
+        <input
+          type="text"
+          id="address"
+          formControlName="address"
+          [class.error]="isFieldInvalid('address')">
+        <span class="error-message" *ngIf="isFieldInvalid('address')">
+          {{ getFieldError('address') }}
+        </span>
+      </div>
+
+      <!-- Code postal -->
+      <div class="form-group">
+        <label for="zipcode">Code postal</label>
+        <input
+          type="text"
+          id="zipcode"
+          formControlName="zipcode"
+          [class.error]="isFieldInvalid('zipcode')">
+        <span class="error-message" *ngIf="isFieldInvalid('zipcode')">
+          {{ getFieldError('zipcode') }}
+        </span>
+      </div>
+
+      <!-- Âge -->
+      <div class="form-group">
+        <label for="age">Âge</label>
+        <input
+          type="number"
+          id="age"
+          formControlName="age"
+          [class.error]="isFieldInvalid('age')">
+        <span class="error-message" *ngIf="isFieldInvalid('age')">
+          {{ getFieldError('age') }}
+        </span>
+      </div>
+
+      <!-- Genre -->
+      <div class="form-group">
+        <label for="gender">Genre</label>
+        <select
+          id="gender"
+          formControlName="gender"
+          [class.error]="isFieldInvalid('gender')">
+          <option value="">Sélectionnez</option>
+          <option value="male">Homme</option>
+          <option value="female">Femme</option>
+          <option value="other">Autre</option>
+        </select>
+        <span class="error-message" *ngIf="isFieldInvalid('gender')">
+          {{ getFieldError('gender') }}
+        </span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="resetForm()">
+        Réinitialiser
+      </button>
+      <button type="submit" class="btn-primary" [disabled]="profileForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Sauvegarder</span>
+        <div class="spinner" *ngIf="isLoading"></div>
+      </button>
+    </div>
+  </form>
+</div>

@@ -4,6 +4,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ConnectionComponent } from './connection/connection.component';
 import { SignupComponent } from './signup/signup.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -30,12 +32,23 @@ export const routes: Routes = [
     data: { hideNavbar: true }
   },
   {
-    path: 'profile',
-    component: ConnectionComponent
-  },
-  {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
     data: { hideNavbar: true }
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent
+      },
+      {
+        path: '',
+        redirectTo: 'profile',
+        pathMatch: 'full'
+      }
+    ]
   }
 ];
