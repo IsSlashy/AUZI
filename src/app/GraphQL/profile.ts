@@ -31,3 +31,12 @@ export const UPDATE_USER_PROFILE = gql`
     }
   }
 `;
+
+
+export const GET_USER_FIRSTNAME = gql`
+  query GetMe {
+    me {
+      firstName
+    }
+  }
+`;

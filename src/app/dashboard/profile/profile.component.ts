@@ -2,7 +2,7 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { GET_USER_PROFILE, UPDATE_USER_PROFILE } from '../GraphQL/profile';
+import { GET_USER_PROFILE, UPDATE_USER_PROFILE } from '../../GraphQL/profile';
 
 // Interfaces
 interface UserProfile {

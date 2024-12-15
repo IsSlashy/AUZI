@@ -5,7 +5,7 @@ import { ConnectionComponent } from './connection/connection.component';
 import { SignupComponent } from './signup/signup.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './dashboard/profile/profile.component';
 
 export const routes: Routes = [
   {

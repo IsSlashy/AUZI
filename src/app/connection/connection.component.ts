@@ -25,10 +25,10 @@ interface ApolloError extends Error {
   styleUrls: ['./connection.component.scss']
 })
 export class ConnectionComponent {
-  email: string = '';
-  password: string = '';
-  isLoading: boolean = false;
-  errorMessage: string = '';
+  email = '';
+  password = '';
+  isLoading = false;
+  errorMessage = '';
   private apolloClient: ApolloClient<any>;
   private platformId = inject(PLATFORM_ID);
 
@@ -49,7 +49,7 @@ export class ConnectionComponent {
   async connect() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    if (!this.email || !this.password) {
+    if (!this.email.trim() || !this.password.trim()) {
       this.errorMessage = 'Veuillez remplir tous les champs';
       return;
     }
@@ -58,77 +58,85 @@ export class ConnectionComponent {
     this.errorMessage = '';
 
     try {
-      console.log('Attempting authentication with:', {
-        email: this.email,
-        password: 'HIDDEN'
-      });
+      console.log('Tentative d\'authentification avec:', { email: this.email, password: 'HIDDEN' });
 
       const result = await this.apolloClient.mutate({
         mutation: AUTHENTICATE_USER,
         variables: {
           input: {
             email: this.email,
-            password: this.password
-          }
-        }
+            password: this.password,
+          },
+        },
       });
 
-      console.log('Authentication response:', result);
+      console.log('Réponse d\'authentification:', result);
 
-      if (result.data?.authenticateUser?.token) {
-        const { token, user } = result.data.authenticateUser;
+      const { token, user } = result.data?.authenticateUser || {};
+      if (token) {
+        this.storeAuthenticationData(token, user);
+        this.clearCredentials();
 
-        if (isPlatformBrowser(this.platformId)) {
-          // Store token and user info
-          localStorage.setItem('access-token', token);
-          localStorage.setItem('user-id', user.id);
-          localStorage.setItem('user-name', `${user.firstName} ${user.lastName}`);
-        }
-
-        // Clear sensitive data
-        this.email = '';
-        this.password = '';
-
-        console.log('Authentication successful, navigating to home');
+        console.log('Authentification réussie, redirection vers /home');
         await this.router.navigate(['/home']);
       } else {
         this.errorMessage = 'Échec de l\'authentification - Aucun token reçu';
       }
     } catch (error: unknown) {
-      const apolloError = error as ApolloError;
-
-      console.error('Authentication error details:', {
-        message: apolloError.message,
-        networkError: apolloError.networkError,
-        graphQLErrors: apolloError.graphQLErrors?.map(err => ({
-          message: err.message,
-          path: err.path,
-          extensions: err.extensions
-        }))
-      });
-
-      // Set user-friendly error message
-      this.errorMessage = apolloError.graphQLErrors?.[0]?.message ||
-                         'Erreur lors de la connexion. Veuillez réessayer.';
+      this.handleAuthenticationError(error as ApolloError);
     } finally {
       this.isLoading = false;
     }
   }
 
-  // Utility method to get decoded token
+  private storeAuthenticationData(token: string, user: any) {
+    if (isPlatformBrowser(this.platformId)) {
+      console.log('Stockage des informations d\'authentification');
+      localStorage.setItem('access-token', token);
+      localStorage.setItem('user-id', user.id);
+      localStorage.setItem('user-name', `${user.firstName} ${user.lastName}`);
+
+      // Vérification immédiate
+      console.log('Vérification de localStorage:', {
+        token: localStorage.getItem('access-token'),
+        userId: localStorage.getItem('user-id'),
+        userName: localStorage.getItem('user-name'),
+      });
+    }
+  }
+
+
+  private clearCredentials() {
+    this.email = '';
+    this.password = '';
+  }
+
+  private handleAuthenticationError(error: ApolloError) {
+    console.error('Détails de l\'erreur d\'authentification:', {
+      message: error.message,
+      networkError: error.networkError,
+      graphQLErrors: error.graphQLErrors?.map(err => ({
+        message: err.message,
+        path: err.path,
+        extensions: err.extensions,
+      })),
+    });
+
+    this.errorMessage =
+      error.graphQLErrors?.[0]?.message ||
+      'Erreur lors de la connexion. Veuillez réessayer.';
+  }
+
+  // Static utility methods for token management
   static getStoredToken(): string | null {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem('access-token');
+    return isPlatformBrowser(PLATFORM_ID) ? localStorage.getItem('access-token') : null;
   }
 
-  // Utility method to get user ID
   static getStoredUserId(): string | null {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem('user-id');
+    return isPlatformBrowser(PLATFORM_ID) ? localStorage.getItem('user-id') : null;
   }
 
-  // Utility method to check if user is authenticated
   static isAuthenticated(): boolean {
-    return !!this.getStoredToken();
+    return !!ConnectionComponent.getStoredToken();
   }
 }
