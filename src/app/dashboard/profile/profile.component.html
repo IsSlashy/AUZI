@@ -124,9 +124,6 @@
     </div>
 
     <div class="form-actions">
-      <button type="button" class="btn-secondary" (click)="resetForm()">
-        Réinitialiser
-      </button>
       <button type="submit" class="btn-primary" [disabled]="profileForm.invalid || isLoading">
         <span *ngIf="!isLoading">Sauvegarder</span>
         <div class="spinner" *ngIf="isLoading"></div>
