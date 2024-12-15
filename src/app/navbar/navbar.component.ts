@@ -1,6 +1,6 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChatPopupComponent } from '../chat-popup/chat-popup.component';
 
 @Component({
@@ -16,9 +16,14 @@ export class NavbarComponent implements AfterViewInit {
   isDropdownOpen = false;
   isLoggedIn = false;
 
-  constructor(private router: Router) {
-    const token = localStorage.getItem('access-token');
-    this.isLoggedIn = !!token;
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('access-token');
+      this.isLoggedIn = !!token;
+    }
   }
 
   ngAfterViewInit() {
@@ -47,10 +52,12 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   logout() {
-    localStorage.removeItem('access-token');
-    this.isLoggedIn = false;
-    this.isDropdownOpen = false;
-    this.router.navigate(['/login']);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('access-token');
+      this.isLoggedIn = false;
+      this.isDropdownOpen = false;
+      this.router.navigate(['/login']);
+    }
   }
 
   openPopup() {
@@ -59,5 +66,10 @@ export class NavbarComponent implements AfterViewInit {
     } else {
       console.error('ChatPopupComponent is not available');
     }
+  }
+
+  // Optionnel : Méthode utilitaire pour vérifier si on est dans le navigateur
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
   }
 }

@@ -9,17 +9,39 @@
     <form (ngSubmit)="connect()">
       <div class="form-group">
         <label for="email">Email address*</label>
-        <input [(ngModel)]="email" name="email" id="email" type="email" required autocomplete="username" class="styled-input">
+        <input
+          [(ngModel)]="email"
+          name="email"
+          id="email"
+          type="email"
+          required
+          autocomplete="username"
+          class="styled-input"
+          [class.error]="errorMessage && !email"
+        >
       </div>
       <div class="form-group">
         <label for="password">Password*</label>
-        <input [(ngModel)]="password" name="password" id="password" type="password" required autocomplete="current-password" class="styled-input">
+        <input
+          [(ngModel)]="password"
+          name="password"
+          id="password"
+          type="password"
+          required
+          autocomplete="current-password"
+          class="styled-input"
+          [class.error]="errorMessage && !password"
+        >
       </div>
       <div class="form-group">
-        <!-- Link to the Forgot Password page -->
         <a [routerLink]="['/forgot-password']">Forgot password?</a>
       </div>
-      <button type="submit" class="login-btn">Continue</button>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <button type="submit" class="login-btn" [disabled]="isLoading">
+        {{ isLoading ? 'Connecting...' : 'Continue' }}
+      </button>
     </form>
 
     <div class="form-group">
@@ -27,7 +49,11 @@
     </div>
 
     <footer>
-      <p>© 2024 Auzi Work & Travel. <a href="#">Privacy Policy</a> <a href="#">Terms</a> <a href="#">Contact Support</a></p>
+      <p>© 2024 Auzi Work & Travel.
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact Support</a>
+      </p>
     </footer>
   </div>
 </div>
