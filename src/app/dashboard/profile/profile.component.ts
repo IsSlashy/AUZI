@@ -30,7 +30,7 @@ interface UpdateUserProfileResponse {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'], // styleUrls corrigé
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
@@ -137,10 +137,12 @@ export class ProfileComponent implements OnInit {
         age: parseInt(this.profileForm.value.age as string, 10),
       };
 
+      console.log('Variables envoyées à la mutation :', formValue);
+
       const result = await this.apollo.mutate<UpdateUserProfileResponse>({
         mutation: UPDATE_USER_PROFILE,
         variables: {
-          input: formValue, // Passe les données dans un objet `input`
+          input: formValue,
         },
         context: {
           headers: {
@@ -149,7 +151,6 @@ export class ProfileComponent implements OnInit {
         },
       }).toPromise();
 
-
       if (result?.data?.updateUserProfile) {
         this.userProfile = result.data.updateUserProfile;
         this.successMessage = 'Profil mis à jour avec succès';
@@ -157,11 +158,12 @@ export class ProfileComponent implements OnInit {
       }
     } catch (error: any) {
       this.errorMessage = 'Erreur lors de la mise à jour du profil';
-      console.error('[ERROR] Erreur de mise à jour:', error);
+      console.error('[ERROR] Erreur de mise à jour :', error);
     } finally {
       this.isLoading = false;
     }
   }
+
 
   resetForm(): void {
     if (this.userProfile) {

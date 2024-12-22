@@ -23,6 +23,8 @@
     "@angular/router": "^18.2.1",
     "@angular/ssr": "^18.2.1",
     "@apollo/client": "^3.11.4",
+    "@stripe/stripe-js": "^5.4.0",
+    "@types/stripe-v3": "^3.1.33",
     "apollo-angular": "^7.1.2",
     "auzi-front": "file:",
     "express": "^4.21.1",
