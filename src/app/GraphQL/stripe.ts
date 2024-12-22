@@ -12,12 +12,13 @@ export const CREATE_SUBSCRIPTION = gql`
 `;
 
 export const GET_SUBSCRIPTION = gql`
-  query GetSubscription($subscriptionId: String!) {
-    getSubscription(subscriptionId: $subscriptionId) {
-      id
-      status
-      currentPeriodEnd
-      cancelAtPeriodEnd
-    }
+query GetCustomerSubscriptions($customerId: String!) {
+  getCustomerSubscriptions(customerId: $customerId) {
+    id
+    status
+    currentPeriodEnd
+    cancelAtPeriodEnd
+    priceId
   }
+}
 `;

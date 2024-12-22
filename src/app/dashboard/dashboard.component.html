@@ -43,6 +43,13 @@
           <i class="fas fa-sliders-h"></i>
           <span>Preferences</span>
         </button>
+        <button
+          [class.active]="activeSection === 'subscription'"
+          (click)="setActiveSection('subscription')"
+          class="nav-button">
+          <i class="fas fa-credit-card"></i>
+          <span>Subscription</span>
+        </button>
       </nav>
     </div>
 

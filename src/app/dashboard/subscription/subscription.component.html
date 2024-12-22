@@ -1,0 +1,27 @@
+<div class="subscription-container" *ngIf="!isLoading && subscriptions.length > 0; else noSubscriptions">
+  <h1>Mes abonnements</h1>
+  <div *ngFor="let subscription of subscriptions" class="subscription-card">
+    <div class="subscription-info">
+      <h2>Abonnement ID : {{ subscription.id }}</h2>
+      <p>Status : <span [class]="subscription.status">{{ subscription.status }}</span></p>
+      <p>Fin de la période actuelle : {{ subscription.currentPeriodEnd | date:'short' }}</p>
+      <p *ngIf="subscription.cancelAtPeriodEnd" class="warning">
+        Cet abonnement sera annulé à la fin de la période.
+      </p>
+    </div>
+  </div>
+</div>
+
+<ng-template #noSubscriptions>
+  <div class="no-subscriptions">
+    <h2>Vous n'avez aucun abonnement actif.</h2>
+  </div>
+</ng-template>
+
+<div *ngIf="isLoading" class="loading">
+  <p>Chargement des abonnements...</p>
+</div>
+
+<div *ngIf="errorMessage" class="error">
+  <p>{{ errorMessage }}</p>
+</div>

@@ -6,35 +6,36 @@ import { SignupComponent } from './signup/signup.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './dashboard/profile/profile.component';
+import { SubscriptionComponent } from './dashboard/subscription/subscription.component';
 
 export const routes: Routes = [
   {
     path: '',
     redirectTo: '/home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'navbar',
-    component: NavbarComponent
+    component: NavbarComponent,
   },
   {
     path: 'login',
     component: ConnectionComponent,
-    data: { hideNavbar: true }
+    data: { hideNavbar: true },
   },
   {
     path: 'register',
     component: SignupComponent,
-    data: { hideNavbar: true }
+    data: { hideNavbar: true },
   },
   {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
-    data: { hideNavbar: true }
+    data: { hideNavbar: true },
   },
   {
     path: 'dashboard',
@@ -42,13 +43,17 @@ export const routes: Routes = [
     children: [
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
+      },
+      {
+        path: 'subscription',
+        component: SubscriptionComponent,
       },
       {
         path: '',
         redirectTo: 'profile',
-        pathMatch: 'full'
-      }
-    ]
-  }
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];
