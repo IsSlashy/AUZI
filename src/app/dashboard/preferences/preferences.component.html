@@ -1,1 +1,30 @@
-<p>preferences works!</p>
+<div class="container">
+  <h1>Preferences</h1>
+  <p>Gérez vos préférences utilisateur.</p>
+
+  <form (ngSubmit)="savePreferences()">
+    <div class="form-group">
+      <label for="language">Langue</label>
+      <select id="language" [(ngModel)]="preferences.language" name="language" required>
+        <option value="en">Anglais</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="theme">Thème</label>
+      <select id="theme" [(ngModel)]="preferences.theme" name="theme" required>
+        <option value="light">Clair</option>
+        <option value="dark">Sombre</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="notifications">Notifications</label>
+      <input type="checkbox" id="notifications" [(ngModel)]="preferences.receiveNotifications" name="receiveNotifications" />
+      <span>Recevoir des notifications</span>
+    </div>
+
+    <button type="submit" class="btn-save">Sauvegarder</button>
+  </form>
+</div>

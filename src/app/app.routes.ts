@@ -7,6 +7,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { SubscriptionComponent } from './dashboard/subscription/subscription.component';
+import { PreferencesComponent } from './dashboard/preferences/preferences.component';
+import { DocumentsComponent } from './dashboard/documents/documents.component';
 
 export const routes: Routes = [
   {
@@ -48,6 +50,14 @@ export const routes: Routes = [
       {
         path: 'subscription',
         component: SubscriptionComponent,
+      },
+      {
+        path: 'preferences',
+        component: PreferencesComponent,
+      },
+      {
+        path: 'documents',
+        component: DocumentsComponent,
       },
       {
         path: '',

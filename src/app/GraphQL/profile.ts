@@ -43,3 +43,13 @@ export const GET_USER_FIRSTNAME = gql`
     }
   }
 `;
+
+export const GET_USER_DOCUMENTS = gql`
+query GetUserDocuments($userId: ID!) {
+  getUserDocuments(userId: $userId) {
+    id
+    name
+    content
+  }
+}
+`;
