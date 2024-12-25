@@ -1,18 +1,48 @@
 <div class="documents-container">
   <h2>Mes Documents</h2>
 
+  <!-- Section de téléchargement -->
   <div class="upload-section">
-    <input type="file" (change)="onFileSelected($event)" accept="application/pdf" />
-    <button (click)="uploadDocument()">Téléverser le document</button>
+    <input
+      id="file-upload"
+      type="file"
+      (change)="onFileSelected($event)"
+      accept="application/pdf"
+    />
+    <label for="file-upload" class="custom-file-label">
+      Choisir un fichier
+    </label>
+    <button (click)="uploadDocument()" class="upload-button">
+      Téléverser le document
+    </button>
   </div>
 
+  <!-- Aperçu du fichier PDF -->
+  <div class="file-preview" *ngIf="selectedFile">
+    <h3>Aperçu du fichier</h3>
+    <div class="preview-box">
+      <p>{{ selectedFile.name }}</p>
+      <iframe
+        [src]="filePreviewUrl"
+        width="100%"
+        height="400px"
+      ></iframe>
+    </div>
+  </div>
+
+
+  <!-- Liste des documents -->
   <div class="documents-list">
     <h3>Documents uploadés</h3>
     <ul>
-      <li *ngFor="let doc of documents">
-        <span>{{ doc.name }}</span>
-        <button (click)="viewDocument(doc)">Voir</button>
-        <button (click)="deleteDocument(doc.id)">Supprimer</button>
+      <li *ngFor="let doc of documents" class="document-item">
+        <span class="document-name">{{ doc.name }}</span>
+        <button (click)="viewDocument(doc)" class="view-button">
+          Voir
+        </button>
+        <button (click)="deleteDocument(doc.id)" class="delete-button">
+          Supprimer
+        </button>
       </li>
     </ul>
   </div>

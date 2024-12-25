@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import gql from 'graphql-tag';
 
 @Component({
@@ -11,15 +12,17 @@ import gql from 'graphql-tag';
   styleUrls: ['./documents.component.scss'],
 })
 export class DocumentsComponent {
-  documents: any[] = [];
-  selectedFile: File | null = null;
+  documents: any[] = []; // Liste des documents uploadés
+  selectedFile: File | null = null; // Fichier sélectionné par l'utilisateur
+  filePreviewUrl: SafeResourceUrl | null = null; // URL sécurisée pour afficher un aperçu PDF
 
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, public sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     this.loadDocuments();
   }
 
+  // Récupère l'ID de l'utilisateur depuis le localStorage
   getCurrentUserId(): string | null {
     if (typeof window === 'undefined') {
       console.error('localStorage n\'est pas disponible dans cet environnement.');
@@ -36,6 +39,7 @@ export class DocumentsComponent {
     return userId;
   }
 
+  // Charge les documents de l'utilisateur
   loadDocuments() {
     const userId = this.getCurrentUserId();
     if (!userId) {
@@ -54,9 +58,7 @@ export class DocumentsComponent {
             }
           }
         `,
-        variables: {
-          userId,
-        },
+        variables: { userId },
       })
       .subscribe(
         (result: any) => {
@@ -68,10 +70,16 @@ export class DocumentsComponent {
       );
   }
 
+  // Gère la sélection d'un fichier par l'utilisateur
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
+      const fileUrl = URL.createObjectURL(this.selectedFile); // Génère l'URL temporaire
+      this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl); // Sécurise l'URL pour Angular
+    }
   }
 
+  // Upload un document pour l'utilisateur
   uploadDocument() {
     if (!this.selectedFile) {
       alert('Veuillez sélectionner un fichier.');
@@ -97,18 +105,14 @@ export class DocumentsComponent {
               }
             }
           `,
-          variables: {
-            file,
-            userId,
-          },
-          context: {
-            useMultipart: true, // Nécessaire pour le fichier
-          },
+          variables: { file, userId },
+          context: { useMultipart: true }, // Active les uploads multipart
         })
         .subscribe(
           () => {
             alert('Document uploadé avec succès.');
             this.loadDocuments();
+            this.clearFileSelection(); // Réinitialise la sélection après upload
           },
           (error) => {
             console.error('Erreur lors de l\'upload du document :', error);
@@ -118,6 +122,7 @@ export class DocumentsComponent {
     reader.readAsDataURL(this.selectedFile);
   }
 
+  // Affiche un document PDF dans une nouvelle fenêtre
   viewDocument(document: any) {
     const content = atob(document.content);
     const blob = new Blob([content], { type: 'application/pdf' });
@@ -125,6 +130,7 @@ export class DocumentsComponent {
     window.open(url);
   }
 
+  // Supprime un document de la liste de l'utilisateur
   deleteDocument(documentId: number) {
     this.apollo
       .mutate({
@@ -136,9 +142,7 @@ export class DocumentsComponent {
             }
           }
         `,
-        variables: {
-          documentId,
-        },
+        variables: { documentId },
       })
       .subscribe(
         () => {
@@ -149,5 +153,11 @@ export class DocumentsComponent {
           console.error('Erreur lors de la suppression du document :', error);
         }
       );
+  }
+
+  // Réinitialise la sélection du fichier et l'URL de l'aperçu
+  clearFileSelection() {
+    this.selectedFile = null;
+    this.filePreviewUrl = null;
   }
 }
