@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http'; // Ajout de withFetch
 import { InMemoryCache } from '@apollo/client/core';
 import { provideClientHydration } from '@angular/platform-browser';
 
@@ -12,21 +12,21 @@ function createApollo(httpLink: HttpLink) {
     cache: new InMemoryCache(),
     link: httpLink.create({
       uri: 'https://api.auzi.fr/graphql',
-      withCredentials: true
-    })
+      withCredentials: true,
+    }),
   };
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withFetch()), // Ajout de withFetch() ici
     provideClientHydration(),
     importProvidersFrom(ApolloModule),
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
-      deps: [HttpLink]
-    }
-  ]
+      deps: [HttpLink],
+    },
+  ],
 };

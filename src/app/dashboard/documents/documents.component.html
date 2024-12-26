@@ -1,49 +1,30 @@
 <div class="documents-container">
-  <h2>Mes Documents</h2>
+  <h2>Vos documents</h2>
 
-  <!-- Section de téléchargement -->
-  <div class="upload-section">
-    <input
-      id="file-upload"
-      type="file"
-      (change)="onFileSelected($event)"
-      accept="application/pdf"
-    />
-    <label for="file-upload" class="custom-file-label">
-      Choisir un fichier
-    </label>
-    <button (click)="uploadDocument()" class="upload-button">
-      Téléverser le document
-    </button>
-  </div>
-
-  <!-- Aperçu du fichier PDF -->
-  <div class="file-preview" *ngIf="selectedFile">
-    <h3>Aperçu du fichier</h3>
-    <div class="preview-box">
-      <p>{{ selectedFile.name }}</p>
-      <iframe
-        [src]="filePreviewUrl"
-        width="100%"
-        height="400px"
-      ></iframe>
+  <div class="documents-list">
+    <!-- Liste des documents -->
+    <div class="document-item" *ngFor="let doc of documents">
+      <div class="document-name">{{ doc.name }}</div>
+      <button class="view-button" (click)="viewDocument(doc)">Voir PDF</button>
+      <button class="delete-button" (click)="deleteDocument(doc.id)">Supprimer</button>
+      <button class="resume-button" (click)="generateAustralianResume(doc)">
+        Générer CV Australien
+      </button>
     </div>
   </div>
 
+  <hr />
 
-  <!-- Liste des documents -->
-  <div class="documents-list">
-    <h3>Documents uploadés</h3>
-    <ul>
-      <li *ngFor="let doc of documents" class="document-item">
-        <span class="document-name">{{ doc.name }}</span>
-        <button (click)="viewDocument(doc)" class="view-button">
-          Voir
-        </button>
-        <button (click)="deleteDocument(doc.id)" class="delete-button">
-          Supprimer
-        </button>
-      </li>
-    </ul>
+  <h3>Uploader un nouveau document</h3>
+  <div class="upload-section">
+    <!-- Label custom pour cliquer sur le champ file -->
+    <label class="custom-file-label" for="fileInput">Choisir un fichier</label>
+    <input id="fileInput" type="file" (change)="onFileSelected($event)" />
+    <button class="upload-button" (click)="uploadDocument()">Envoyer</button>
+  </div>
+
+  <!-- Aperçu PDF côté front (facultatif) -->
+  <div class="pdf-preview" *ngIf="filePreviewUrl">
+    <iframe [src]="filePreviewUrl" width="300" height="400"></iframe>
   </div>
 </div>

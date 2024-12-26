@@ -15,28 +15,115 @@
     font-weight: bold;
   }
 
+  hr {
+    margin: 20px 0;
+  }
+
+  // ------------------------------
+  // Section : Liste de documents
+  .documents-list {
+    margin-bottom: 20px;
+
+    .document-item {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+      transition: box-shadow 0.3s ease;
+
+      &:hover {
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .document-name {
+        flex: 1;
+        font-size: 16px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      button {
+        margin-left: 10px;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s;
+
+        &:hover {
+          transform: translateY(-2px);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+
+      .view-button {
+        background-color: #007bff;
+        color: #fff;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+
+      .delete-button {
+        background-color: #dc3545;
+        color: #fff;
+
+        &:hover {
+          background-color: #c82333;
+        }
+      }
+
+      .resume-button {
+        background-color: #17a2b8;
+        color: #fff;
+
+        &:hover {
+          background-color: #138496;
+        }
+      }
+    }
+  }
+
+  // ------------------------------
+  // Section : Upload
+  h3 {
+    font-size: 20px;
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
   .upload-section {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 10px;
-    margin-bottom: 20px;
 
     input[type="file"] {
-      display: none; /* Champ masqué */
+      display: none; // Champ masqué (on utilise le label)
     }
 
     .custom-file-label {
       background-color: #007bff;
-      color: white;
+      color: #fff;
       padding: 10px 20px;
-      border-radius: 30px; /* Bouton arrondi */
+      border-radius: 30px; // Bouton arrondi
       font-size: 14px;
       font-weight: bold;
       text-align: center;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Effet d'ombre */
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); // Effet d'ombre
 
       &:hover {
         background-color: #0056b3;
@@ -52,7 +139,7 @@
 
     .upload-button {
       background-color: #28a745;
-      color: white;
+      color: #fff;
       padding: 10px 20px;
       border-radius: 30px;
       font-size: 14px;
@@ -71,67 +158,16 @@
     }
   }
 
-  .documents-list {
-    h3 {
-      font-size: 20px;
-      margin-bottom: 15px;
-      color: #555;
-      font-weight: bold;
-      text-align: center;
-    }
+  // ------------------------------
+  // Section : Aperçu PDF
+  .pdf-preview {
+    margin-top: 20px;
+    text-align: center;
 
-    ul {
-      list-style: none;
-      padding: 0;
-
-      .document-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 15px;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-        transition: box-shadow 0.3s ease;
-
-        &:hover {
-          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .document-name {
-          font-size: 16px;
-          color: #333;
-          font-weight: 500;
-        }
-
-        .view-button,
-        .delete-button {
-          margin-left: 10px;
-          background-color: #dc3545;
-          color: white;
-          padding: 5px 10px;
-          border: none;
-          border-radius: 5px;
-          font-size: 14px;
-          cursor: pointer;
-          transition: background-color 0.3s ease, transform 0.2s;
-
-          &:hover {
-            background-color: #c82333;
-            transform: translateY(-2px);
-          }
-
-          &:first-of-type {
-            background-color: #007bff;
-
-            &:hover {
-              background-color: #0056b3;
-            }
-          }
-        }
-      }
+    iframe {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
     }
   }
 }
