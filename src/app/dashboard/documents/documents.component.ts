@@ -12,9 +12,9 @@ import gql from 'graphql-tag';
   styleUrls: ['./documents.component.scss'],
 })
 export class DocumentsComponent {
-  documents: any[] = []; // Liste des documents uploadés
-  selectedFile: File | null = null; // Fichier sélectionné par l'utilisateur
-  filePreviewUrl: SafeResourceUrl | null = null; // URL sécurisée pour afficher un aperçu PDF
+  documents: Array<{ id: string; name: string; content: string }> = []; // Liste des documents utilisateur
+  selectedFile: File | null = null; // Fichier sélectionné
+  filePreviewUrl: SafeResourceUrl | null = null; // URL sécurisée pour l'aperçu PDF
 
   constructor(private apollo: Apollo, public sanitizer: DomSanitizer) {}
 
@@ -22,140 +22,140 @@ export class DocumentsComponent {
     this.loadDocuments();
   }
 
-  // Récupère l'ID de l'utilisateur depuis le localStorage
-  getCurrentUserId(): string | null {
-    if (typeof window === 'undefined') {
-      console.error('localStorage n\'est pas disponible dans cet environnement.');
-      return null;
-    }
-
+  /**
+   * Récupère l'ID utilisateur depuis le localStorage
+   */
+  private getCurrentUserId(): string | null {
     const userId = localStorage.getItem('user-id');
     if (!userId) {
       console.error('Aucun utilisateur connecté.');
       return null;
     }
-
-    console.log('ID utilisateur récupéré :', userId);
     return userId;
   }
 
-  // Charge les documents de l'utilisateur
+  /**
+   * Charge les documents de l'utilisateur
+   */
   loadDocuments() {
     const userId = this.getCurrentUserId();
-    if (!userId) {
-      console.error('Erreur : Aucun utilisateur connecté.');
-      return;
-    }
+    if (!userId) return;
+
+    const GET_USER_DOCUMENTS = gql`
+      query GetUserDocuments($userId: ID!) {
+        getUserDocuments(userId: $userId) {
+          id
+          name
+          content
+        }
+      }
+    `;
 
     this.apollo
-      .query({
-        query: gql`
-          query GetUserDocuments($userId: ID!) {
-            getUserDocuments(userId: $userId) {
-              id
-              name
-              content
-            }
-          }
-        `,
+      .query<{ getUserDocuments: Array<{ id: string; name: string; content: string }> }>({
+        query: GET_USER_DOCUMENTS,
         variables: { userId },
       })
       .subscribe(
-        (result: any) => {
-          this.documents = result.data.getUserDocuments;
+        ({ data }) => {
+          this.documents = data?.getUserDocuments || [];
+          console.log('Documents chargés :', this.documents);
         },
-        (error) => {
-          console.error('Erreur lors de la récupération des documents :', error);
-        }
+        (error) => console.error('Erreur lors du chargement des documents :', error)
       );
   }
 
-  // Gère la sélection d'un fichier par l'utilisateur
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-    if (this.selectedFile) {
-      const fileUrl = URL.createObjectURL(this.selectedFile); // Génère l'URL temporaire
-      this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl); // Sécurise l'URL pour Angular
+  /**
+   * Gère la sélection de fichier
+   */
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      this.selectedFile = input.files[0];
+      this.filePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        URL.createObjectURL(this.selectedFile)
+      );
     }
   }
 
-  // Upload un document pour l'utilisateur
+  /**
+   * Upload un document utilisateur
+   */
   uploadDocument() {
     if (!this.selectedFile) {
       alert('Veuillez sélectionner un fichier.');
       return;
     }
 
-    const userId = this.getCurrentUserId();
-    if (!userId) {
-      console.error('Erreur : Aucun utilisateur connecté.');
-      return;
-    }
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const file = this.selectedFile;
-      this.apollo
-        .mutate({
-          mutation: gql`
-            mutation UploadUserDocument($file: Upload!, $userId: ID!) {
-              uploadUserDocument(file: $file, userId: $userId) {
-                id
-                name
-              }
-            }
-          `,
-          variables: { file, userId },
-          context: { useMultipart: true }, // Active les uploads multipart
-        })
-        .subscribe(
-          () => {
-            alert('Document uploadé avec succès.');
-            this.loadDocuments();
-            this.clearFileSelection(); // Réinitialise la sélection après upload
-          },
-          (error) => {
-            console.error('Erreur lors de l\'upload du document :', error);
-          }
-        );
-    };
-    reader.readAsDataURL(this.selectedFile);
+    fetch('https://api.auzi.fr/upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Erreur réseau : ' + response.status);
+        }
+        const data = await response.json();
+        if (!data.success) {
+          throw new Error('Erreur serveur : ' + (data.message || 'Inconnue'));
+        }
+        alert('Document uploadé avec succès.');
+        this.loadDocuments();
+        this.clearFileSelection();
+      })
+      .catch((error) => {
+        console.error('Erreur lors de l\'upload du document :', error);
+        alert('Une erreur s\'est produite lors de l\'upload.');
+      });
   }
 
-  // Affiche un document PDF dans une nouvelle fenêtre
-  viewDocument(document: any) {
+  /**
+   * Affiche un document PDF
+   */
+  viewDocument(document: { content: string }) {
     const content = atob(document.content);
     const blob = new Blob([content], { type: 'application/pdf' });
     const url = window.URL.createObjectURL(blob);
-    window.open(url);
+    window.open(url, '_blank');
   }
 
-  // Supprime un document de la liste de l'utilisateur
-  deleteDocument(documentId: number) {
+  /**
+   * Supprime un document
+   */
+  deleteDocument(documentId: string) {
+    const DELETE_DOCUMENT = gql`
+      mutation DeleteUserDocument($documentId: ID!) {
+        deleteUserDocument(documentId: $documentId) {
+          success
+          message
+        }
+      }
+    `;
+
     this.apollo
-      .mutate({
-        mutation: gql`
-          mutation DeleteUserDocument($documentId: ID!) {
-            deleteUserDocument(documentId: $documentId) {
-              success
-              message
-            }
-          }
-        `,
+      .mutate<{ deleteUserDocument: { success: boolean; message: string } }>({
+        mutation: DELETE_DOCUMENT,
         variables: { documentId },
       })
       .subscribe(
-        () => {
-          alert('Document supprimé avec succès.');
-          this.loadDocuments();
+        ({ data }) => {
+          if (data?.deleteUserDocument.success) {
+            alert('Document supprimé avec succès.');
+            this.loadDocuments();
+          } else {
+            alert('Erreur lors de la suppression du document.');
+          }
         },
-        (error) => {
-          console.error('Erreur lors de la suppression du document :', error);
-        }
+        (error) => console.error('Erreur lors de la suppression du document :', error)
       );
   }
 
-  // Réinitialise la sélection du fichier et l'URL de l'aperçu
+  /**
+   * Réinitialise la sélection de fichier
+   */
   clearFileSelection() {
     this.selectedFile = null;
     this.filePreviewUrl = null;
