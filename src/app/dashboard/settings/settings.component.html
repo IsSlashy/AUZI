@@ -1,1 +1,39 @@
-<p>settings works!</p>
+<div class="settings-container">
+  <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div class="form-group">
+      <label for="privacy_level">Privacy Level</label>
+      <select id="privacy_level" formControlName="privacy_level">
+        <option value="">Select Privacy Level</option>
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="email_visibility">Email Visibility</label>
+      <select id="email_visibility" formControlName="email_visibility">
+        <option value="">Select Visibility</option>
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="phone_visibility">Phone Visibility</label>
+      <select id="phone_visibility" formControlName="phone_visibility">
+        <option value="">Select Visibility</option>
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="isLoading || settingsForm.invalid">Save Settings</button>
+  </form>
+</div>

@@ -9,6 +9,7 @@ import { ProfileComponent } from './dashboard/profile/profile.component';
 import { SubscriptionComponent } from './dashboard/subscription/subscription.component';
 import { PreferencesComponent } from './dashboard/preferences/preferences.component';
 import { DocumentsComponent } from './dashboard/documents/documents.component';
+import { SettingsComponent } from './dashboard/settings/settings.component'; // Ajout du composant Settings
 
 export const routes: Routes = [
   {
@@ -59,6 +60,7 @@ export const routes: Routes = [
         path: 'documents',
         component: DocumentsComponent,
       },
+      { path: 'settings', component: SettingsComponent },
       {
         path: '',
         redirectTo: 'profile',

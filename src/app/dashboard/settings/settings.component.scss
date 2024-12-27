@@ -1,0 +1,104 @@
+.settings-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.8); /* Arrière-plan transparent */
+      color: #333;
+      appearance: none; /* Supprime le style natif */
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 1);
+      }
+
+      &::-ms-expand {
+        display: none; /* Supprime la flèche par défaut sur IE */
+      }
+    }
+
+    /* Icône pour les menus déroulants */
+    position: relative;
+    &:after {
+      content: '\25BC'; /* Flèche vers le bas */
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 12px;
+      color: #333;
+    }
+  }
+
+  .error-message {
+    color: #d9534f;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .success-message {
+    color: #5cb85c;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+      box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+    }
+
+    &:disabled {
+      background-color: #e0e0e0;
+      color: #a0a0a0;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+}

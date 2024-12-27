@@ -2,50 +2,53 @@
   <div class="dashboard-content">
     <div class="sidebar">
       <div class="user-profile">
-        <div class="avatar-container">
-          <img src="" alt="Profile" class="avatar">
-        </div>
       </div>
 
       <nav class="section-buttons">
         <button
           [class.active]="activeSection === 'profile'"
-          (click)="setActiveSection('profile')"
+          routerLink="profile"
+          routerLinkActive="active"
           class="nav-button">
           <i class="fas fa-user"></i>
           <span>Profile</span>
         </button>
         <button
+        [class.active]="activeSection === 'documents'"
+        routerLink="documents"
+        routerLinkActive="active"
+        class="nav-button">
+        <i class="fas fa-file"></i>
+        <span>Documents</span>
+      </button>
+        <button
           [class.active]="activeSection === 'settings'"
-          (click)="setActiveSection('settings')"
+          routerLink="settings"
+          routerLinkActive="active"
           class="nav-button">
           <i class="fas fa-cog"></i>
           <span>Settings</span>
         </button>
         <button
-          [class.active]="activeSection === 'documents'"
-          (click)="setActiveSection('documents')"
-          class="nav-button">
-          <i class="fas fa-file"></i>
-          <span>Documents</span>
-        </button>
-        <button
           [class.active]="activeSection === 'visa'"
-          (click)="setActiveSection('visa')"
+          routerLink="visa"
+          routerLinkActive="active"
           class="nav-button">
           <i class="fas fa-passport"></i>
           <span>Visa & Immigration</span>
         </button>
         <button
           [class.active]="activeSection === 'preferences'"
-          (click)="setActiveSection('preferences')"
+          routerLink="preferences"
+          routerLinkActive="active"
           class="nav-button">
           <i class="fas fa-sliders-h"></i>
           <span>Preferences</span>
         </button>
         <button
           [class.active]="activeSection === 'subscription'"
-          (click)="setActiveSection('subscription')"
+          routerLink="subscription"
+          routerLinkActive="active"
           class="nav-button">
           <i class="fas fa-credit-card"></i>
           <span>Subscription</span>

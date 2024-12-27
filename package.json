@@ -24,6 +24,7 @@
     "@angular/ssr": "^18.2.1",
     "@apollo/client": "^3.11.4",
     "@stripe/stripe-js": "^5.4.0",
+    "@types/apollo-upload-client": "^18.0.0",
     "apollo-angular": "^7.1.2",
     "apollo-upload-client": "^18.0.1",
     "auzi-front": "file:",
