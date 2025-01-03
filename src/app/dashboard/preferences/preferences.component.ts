@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // <-- Importation du module FormsModule
 import { CommonModule } from '@angular/common';
 import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
+import { gql } from 'graphql-tag';
 
 @Component({
   selector: 'app-preferences',
-  standalone: true, // <-- Spécifie que le composant est autonome
-  imports: [CommonModule, FormsModule], // <-- Ajoutez FormsModule ici
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './preferences.component.html',
   styleUrls: ['./preferences.component.scss'],
 })
-export class PreferencesComponent {
+export class PreferencesComponent implements OnInit {
   preferences = {
     language: 'en',
     theme: 'light',
@@ -21,22 +21,34 @@ export class PreferencesComponent {
   constructor(private apollo: Apollo) {}
 
   ngOnInit() {
+    // Récupération du userId
+    const userId = localStorage.getItem('user-id');
+    if (!userId) {
+      console.error('Aucun userId trouvé dans localStorage');
+      return;
+    }
+
     // Charger les préférences de l'utilisateur connecté
     this.apollo
       .query({
         query: gql`
-          query GetUserPreferences {
-            getUserPreferences {
+          query GetUserPreferences($userId: ID!) {
+            getUserPreferences(userId: $userId) {
               language
               theme
               receiveNotifications
             }
           }
         `,
+        variables: {
+          userId,
+        },
       })
       .subscribe(
         (result: any) => {
-          this.preferences = result.data.getUserPreferences;
+          if (result.data?.getUserPreferences) {
+            this.preferences = result.data.getUserPreferences;
+          }
         },
         (error) => {
           console.error('Erreur lors de la récupération des préférences:', error);
@@ -45,11 +57,18 @@ export class PreferencesComponent {
   }
 
   savePreferences() {
+    // Récupération du userId
+    const userId = localStorage.getItem('user-id');
+    if (!userId) {
+      console.error('Aucun userId trouvé dans localStorage');
+      return;
+    }
+
     this.apollo
       .mutate({
         mutation: gql`
-          mutation UpdateUserPreferences($input: UpdatePreferencesInput!) {
-            updateUserPreferences(input: $input) {
+          mutation UpdateUserPreferences($userId: ID!, $input: UpdatePreferencesInput!) {
+            updateUserPreferences(userId: $userId, input: $input) {
               language
               theme
               receiveNotifications
@@ -57,6 +76,7 @@ export class PreferencesComponent {
           }
         `,
         variables: {
+          userId,
           input: this.preferences,
         },
       })

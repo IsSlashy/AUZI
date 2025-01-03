@@ -1,23 +1,23 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-angular';
 
 export const GET_USER_SETTINGS = gql`
-  query GetUserSettings($userId: ID!) {
-    userSettings(userId: $userId) {
-      id
-      privacy_level
-      email_visibility
-      phone_visibility
-    }
+query GetUserSettings($userId: ID!) {
+  getUserSettings(userId: $userId) {
+    id
+    privacyLevel
+    emailVisibility
+    phoneVisibility
   }
+}
 `;
 
 export const UPDATE_USER_SETTINGS = gql`
-  mutation UpdateUserSettings($input: UpdateUserSettingsInput!) {
-    updateUserSettings(input: $input) {
+  mutation UpdateUserSettings($userId: ID!, $input: UpdateUserSettingsInput!) {
+    updateUserSettings(userId: $userId, input: $input) {
       id
-      privacy_level
-      email_visibility
-      phone_visibility
+      privacyLevel
+      emailVisibility
+      phoneVisibility
     }
   }
 `;

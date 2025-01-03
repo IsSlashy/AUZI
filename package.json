@@ -28,6 +28,7 @@
     "apollo-angular": "^7.1.2",
     "apollo-upload-client": "^18.0.1",
     "auzi-front": "file:",
+    "canvas": "^3.0.0",
     "express": "^4.21.1",
     "extract-files": "^13.0.0",
     "graphql": "^16.9.0",

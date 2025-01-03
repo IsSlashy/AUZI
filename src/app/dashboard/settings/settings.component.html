@@ -1,5 +1,6 @@
 <div class="settings-container">
   <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+    <!-- Messages de succès / erreur -->
     <div *ngIf="successMessage" class="success-message">
       {{ successMessage }}
     </div>
@@ -7,33 +8,38 @@
       {{ errorMessage }}
     </div>
 
+    <!-- Privacy Level -->
     <div class="form-group">
-      <label for="privacy_level">Privacy Level</label>
-      <select id="privacy_level" formControlName="privacy_level">
+      <label for="privacyLevel">Privacy Level</label>
+      <select id="privacyLevel" formControlName="privacyLevel">
         <option value="">Select Privacy Level</option>
         <option value="public">Public</option>
         <option value="private">Private</option>
       </select>
     </div>
 
+    <!-- Email Visibility -->
     <div class="form-group">
-      <label for="email_visibility">Email Visibility</label>
-      <select id="email_visibility" formControlName="email_visibility">
+      <label for="emailVisibility">Email Visibility</label>
+      <select id="emailVisibility" formControlName="emailVisibility">
         <option value="">Select Visibility</option>
         <option value="public">Public</option>
         <option value="private">Private</option>
       </select>
     </div>
 
+    <!-- Phone Visibility -->
     <div class="form-group">
-      <label for="phone_visibility">Phone Visibility</label>
-      <select id="phone_visibility" formControlName="phone_visibility">
+      <label for="phoneVisibility">Phone Visibility</label>
+      <select id="phoneVisibility" formControlName="phoneVisibility">
         <option value="">Select Visibility</option>
         <option value="public">Public</option>
         <option value="private">Private</option>
       </select>
     </div>
 
-    <button type="submit" [disabled]="isLoading || settingsForm.invalid">Save Settings</button>
+    <button type="submit" [disabled]="isLoading || settingsForm.invalid">
+      Save Settings
+    </button>
   </form>
 </div>

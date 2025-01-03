@@ -7,14 +7,12 @@ import { GET_USER_SETTINGS, UPDATE_USER_SETTINGS } from '../../GraphQL/settings'
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule, // Pour lier [formGroup]
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
+  // Formulaire local
   settingsForm: FormGroup;
   isLoading = false;
   successMessage: string | null = null;
@@ -23,30 +21,38 @@ export class SettingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apollo: Apollo,
-    @Inject(PLATFORM_ID) private platformId: Object // Injection de PLATFORM_ID pour détecter le côté client
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    // Initialisation du formulaire
+    // Noms de champs alignés sur le schéma API (camelCase)
     this.settingsForm = this.fb.group({
-      privacy_level: ['', Validators.required],
-      email_visibility: ['', Validators.required],
-      phone_visibility: ['', Validators.required],
+      privacyLevel: ['', Validators.required],
+      emailVisibility: ['', Validators.required],
+      phoneVisibility: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.loadUserSettings();
+    if (this.isBrowser()) {
+      this.loadUserSettings();
+    } else {
+      console.warn('Cette fonctionnalité est disponible uniquement côté client.');
+    }
+  }
+
+  /**
+   * Vérifie si le code est exécuté côté navigateur
+   */
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
   }
 
   /**
    * Charge les paramètres utilisateur depuis l'API
    */
   private loadUserSettings(): void {
-    // Vérifie si le code est exécuté côté navigateur
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
+    if (!this.isBrowser()) return;
 
-    const userId = localStorage.getItem('user-id');
+    const userId = this.getUserIdFromLocalStorage();
     if (!userId) {
       this.errorMessage = 'Utilisateur non authentifié.';
       return;
@@ -60,8 +66,17 @@ export class SettingsComponent implements OnInit {
       })
       .subscribe({
         next: (result: any) => {
-          if (result?.data?.userSettings) {
-            this.settingsForm.patchValue(result.data.userSettings);
+          // Ici, on récupère "getUserSettings" et non "userSettings"
+          const userSettings = result?.data?.getUserSettings;
+          if (userSettings) {
+            this.settingsForm.patchValue({
+              privacyLevel: userSettings.privacyLevel,
+              emailVisibility: userSettings.emailVisibility,
+              phoneVisibility: userSettings.phoneVisibility,
+            });
+            this.errorMessage = null;
+          } else {
+            this.errorMessage = 'Impossible de récupérer les paramètres utilisateur.';
           }
           this.isLoading = false;
         },
@@ -77,32 +92,38 @@ export class SettingsComponent implements OnInit {
    * Sauvegarde les paramètres utilisateur
    */
   saveSettings(): void {
-    // Vérifie si le code est exécuté côté navigateur
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
+    if (!this.isBrowser()) return;
 
     if (this.settingsForm.invalid) {
       this.errorMessage = 'Veuillez remplir tous les champs.';
       return;
     }
 
-    const userId = localStorage.getItem('user-id');
+    const userId = this.getUserIdFromLocalStorage();
     if (!userId) {
       this.errorMessage = 'Utilisateur non authentifié.';
       return;
     }
 
     this.isLoading = true;
-    const input = { userId, ...this.settingsForm.value };
+
+    // On envoie le userId et l'objet input pour la mutation
+    const input = {
+      privacyLevel: this.settingsForm.value.privacyLevel,
+      emailVisibility: this.settingsForm.value.emailVisibility,
+      phoneVisibility: this.settingsForm.value.phoneVisibility,
+    };
 
     this.apollo
       .mutate({
         mutation: UPDATE_USER_SETTINGS,
-        variables: { input },
+        variables: {
+          userId,
+          input,
+        },
       })
       .subscribe({
-        next: (result: any) => {
+        next: () => {
           this.successMessage = 'Paramètres mis à jour avec succès.';
           this.errorMessage = null;
           this.isLoading = false;
@@ -113,5 +134,18 @@ export class SettingsComponent implements OnInit {
           this.isLoading = false;
         },
       });
+  }
+
+  /**
+   * Récupère l'identifiant utilisateur depuis le localStorage
+   */
+  private getUserIdFromLocalStorage(): string | null {
+    if (!this.isBrowser()) return null;
+    try {
+      return localStorage.getItem('user-id');
+    } catch (error) {
+      console.error('[ERROR getUserIdFromLocalStorage]:', error);
+      return null;
+    }
   }
 }
