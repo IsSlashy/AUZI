@@ -30,6 +30,19 @@ export const REGISTER_USER = gql`
     }
   }
 `;
+export const GOOGLE_AUTH = gql`
+  mutation AuthenticateUserWithGoogle($googleToken: String!) {
+    authenticateUserWithGoogle(googleToken: $googleToken) {
+      token
+      user {
+        id
+        email
+        firstName
+        lastName
+      }
+    }
+  }
+`;
 
 export const AUTHENTICATE_USER = gql`
   mutation AuthenticateUser($input: AuthenticateUserInput!) {

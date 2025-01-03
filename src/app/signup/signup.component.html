@@ -8,80 +8,171 @@
   <div class="signup-right">
     <h2>Create an Account</h2>
     <form (ngSubmit)="signup()">
-      <div class="form-group">
-        <label for="firstName">First Name*</label>
-        <div class="input-with-icon">
-          <i class="fa fa-user"></i>
-          <input [(ngModel)]="firstName" name="firstName" id="firstName" type="text" required class="styled-input">
+      <!-- 2 colonnes pour Name -->
+      <div class="row">
+        <div class="form-group half-group">
+          <label for="firstName">First Name*</label>
+          <div class="input-with-icon">
+            <i class="fa fa-user"></i>
+            <input
+              [(ngModel)]="firstName"
+              name="firstName"
+              id="firstName"
+              type="text"
+              required
+              class="styled-input"
+            >
+          </div>
+        </div>
+
+        <div class="form-group half-group">
+          <label for="lastName">Last Name*</label>
+          <div class="input-with-icon">
+            <i class="fa fa-user"></i>
+            <input
+              [(ngModel)]="lastName"
+              name="lastName"
+              id="lastName"
+              type="text"
+              required
+              class="styled-input"
+            >
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="lastName">Last Name*</label>
-        <div class="input-with-icon">
-          <i class="fa fa-user"></i>
-          <input [(ngModel)]="lastName" name="lastName" id="lastName" type="text" required class="styled-input">
+      <!-- Email & Phone -->
+      <div class="row">
+        <div class="form-group half-group">
+          <label for="email">Email Address*</label>
+          <div class="input-with-icon">
+            <i class="fa fa-envelope"></i>
+            <input
+              [(ngModel)]="email"
+              name="email"
+              id="email"
+              type="email"
+              required
+              class="styled-input"
+            >
+          </div>
+        </div>
+
+        <div class="form-group half-group">
+          <label for="phoneNumber">Phone Number</label>
+          <div class="input-with-icon">
+            <i class="fa fa-phone"></i>
+            <input
+              [(ngModel)]="phoneNumber"
+              name="phoneNumber"
+              id="phoneNumber"
+              type="tel"
+              class="styled-input"
+            >
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="email">Email Address*</label>
-        <div class="input-with-icon">
-          <i class="fa fa-envelope"></i>
-          <input [(ngModel)]="email" name="email" id="email" type="email" required class="styled-input">
+      <!-- Password & Confirm -->
+      <div class="row">
+        <div class="form-group half-group">
+          <label for="password">Password*</label>
+          <div class="input-with-icon">
+            <i class="fa fa-lock"></i>
+            <input
+              [(ngModel)]="password"
+              name="password"
+              id="password"
+              type="password"
+              required
+              class="styled-input"
+            >
+          </div>
+        </div>
+
+        <div class="form-group half-group">
+          <label for="confirmPassword">Confirm Password*</label>
+          <div class="input-with-icon">
+            <i class="fa fa-lock"></i>
+            <input
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              id="confirmPassword"
+              type="password"
+              required
+              class="styled-input"
+            >
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="password">Password*</label>
-        <div class="input-with-icon">
-          <i class="fa fa-lock"></i>
-          <input [(ngModel)]="password" name="password" id="password" type="password" required class="styled-input">
+      <!-- Address & Zipcode -->
+      <div class="row">
+        <div class="form-group half-group">
+          <label for="address">Address*</label>
+          <div class="input-with-icon">
+            <i class="fa fa-home"></i>
+            <input
+              [(ngModel)]="address"
+              name="address"
+              id="address"
+              type="text"
+              required
+              class="styled-input"
+            >
+          </div>
+        </div>
+
+        <div class="form-group half-group">
+          <label for="zipcode">Zipcode*</label>
+          <div class="input-with-icon">
+            <i class="fa fa-map-pin"></i>
+            <input
+              [(ngModel)]="zipcode"
+              name="zipcode"
+              id="zipcode"
+              type="text"
+              required
+              class="styled-input"
+            >
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password*</label>
-        <div class="input-with-icon">
-          <i class="fa fa-lock"></i>
-          <input [(ngModel)]="confirmPassword" name="confirmPassword" id="confirmPassword" type="password" required class="styled-input">
+      <!-- Age & Gender -->
+      <div class="row">
+        <div class="form-group half-group">
+          <label for="age">Age*</label>
+          <div class="input-with-icon">
+            <i class="fa fa-birthday-cake"></i>
+            <input
+              [(ngModel)]="age"
+              name="age"
+              id="age"
+              type="number"
+              required
+              class="styled-input"
+            >
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="address">Address*</label>
-        <div class="input-with-icon">
-          <i class="fa fa-home"></i>
-          <input [(ngModel)]="address" name="address" id="address" type="text" required class="styled-input">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="zipcode">Zipcode*</label>
-        <div class="input-with-icon">
-          <i class="fa fa-map-pin"></i>
-          <input [(ngModel)]="zipcode" name="zipcode" id="zipcode" type="text" required class="styled-input">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="age">Age*</label>
-        <div class="input-with-icon">
-          <i class="fa fa-birthday-cake"></i>
-          <input [(ngModel)]="age" name="age" id="age" type="number" required class="styled-input">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="gender">Gender*</label>
-        <div class="input-with-icon select-with-icon">
-          <i class="fa fa-venus-mars"></i>
-          <select [(ngModel)]="gender" name="gender" id="gender" required class="styled-select">
-            <option value="" disabled selected>Select your gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
+        <div class="form-group half-group">
+          <label for="gender">Gender*</label>
+          <div class="input-with-icon select-with-icon">
+            <i class="fa fa-venus-mars"></i>
+            <select
+              [(ngModel)]="gender"
+              name="gender"
+              id="gender"
+              required
+              class="styled-select"
+            >
+              <option value="" disabled selected>Select your gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
         </div>
       </div>
 

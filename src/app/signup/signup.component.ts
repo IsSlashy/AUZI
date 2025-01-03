@@ -37,16 +37,16 @@ interface RegisterUserInput {
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
-  firstName: string = '';
-  lastName: string = '';
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  phoneNumber: string = '';
-  address: string = '';
-  zipcode: string = '';
-  age: number = 0;
-  gender: string = '';
+  firstName = '';
+  lastName = '';
+  email = '';
+  password = '';
+  confirmPassword = '';
+  phoneNumber = '';
+  address = '';
+  zipcode = '';
+  age = 0;
+  gender = '';
 
   private apolloClient: ApolloClient<any>;
 
@@ -70,8 +70,16 @@ export class SignupComponent {
       return;
     }
 
-    if (!this.firstName || !this.lastName || !this.email || !this.password ||
-        !this.address || !this.zipcode || !this.age || !this.gender) {
+    if (
+      !this.firstName ||
+      !this.lastName ||
+      !this.email ||
+      !this.password ||
+      !this.address ||
+      !this.zipcode ||
+      !this.age ||
+      !this.gender
+    ) {
       alert('Please fill in all required fields');
       return;
     }

@@ -1,12 +1,27 @@
 <div class="login-page">
+  <!-- Section gauche avec contenu visuel -->
   <div class="login-left">
     <img src="https://i.ibb.co/kQgXVNc/Copie-de-Auzi-1.png" alt="Logo" class="login-logo">
     <h2>Unlock new opportunities and perspective.</h2>
     <p>Discover & join the best real-world travel experiences.</p>
   </div>
+
+  <!-- Section droite avec le formulaire -->
   <div class="login-right">
     <h2>Welcome to Auzi</h2>
-    <form (ngSubmit)="connect()">
+
+    <div class="google-login">
+      <button type="button" class="google-btn" (click)="connectWithGoogle()">
+        <img src="assets/google-icon.svg" alt="Google Icon" />
+        Sign in with Google
+      </button>
+    </div>
+    
+
+    <p class="separator">or use your email account</p>
+
+    <!-- Formulaire de connexion -->
+    <form (ngSubmit)="connectWithAuzi()">
       <div class="form-group">
         <label for="email">Email address*</label>
         <input
@@ -20,6 +35,7 @@
           [class.error]="errorMessage && !email"
         >
       </div>
+
       <div class="form-group">
         <label for="password">Password*</label>
         <input
@@ -33,21 +49,28 @@
           [class.error]="errorMessage && !password"
         >
       </div>
+
       <div class="form-group">
         <a [routerLink]="['/forgot-password']">Forgot password?</a>
       </div>
+
+      <!-- Affichage des erreurs -->
       <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
+
+      <!-- Bouton de soumission -->
       <button type="submit" class="login-btn" [disabled]="isLoading">
         {{ isLoading ? 'Connecting...' : 'Continue' }}
       </button>
     </form>
 
+    <!-- Lien vers la page d'inscription -->
     <div class="form-group">
       <p>Don't have an account? <a [routerLink]="['/register']">Sign up here</a></p>
     </div>
 
+    <!-- Pied de page -->
     <footer>
       <p>© 2024 Auzi Work & Travel.
         <a href="#">Privacy Policy</a>

@@ -56,26 +56,43 @@
 
 .signup-right form {
   width: 100%;
-  max-width: 350px;
+  max-width: 600px; /* un peu plus grand pour 2 colonnes */
+}
+
+/* Afficher 2 champs / row */
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Autorise le wrap si l'écran est trop étroit */
+}
+
+.half-group {
+  width: 50%;
+  padding: 0 10px; /* Espace horizontal */
+  box-sizing: border-box;
 }
 
 .form-group {
   margin-bottom: 20px;
   position: relative;
+  display: flex;
+  flex-direction: column; /* label + input */
 }
 
-.input-with-icon, .select-with-icon {
+.input-with-icon,
+.select-with-icon {
   display: flex;
   align-items: center;
   position: relative;
 }
 
-.input-with-icon i, .select-with-icon i {
+.input-with-icon i,
+.select-with-icon i {
   margin-right: 10px;
   color: #007bff;
 }
 
-.styled-input, .styled-select {
+.styled-input,
+.styled-select {
   width: 100%;
   padding: 10px;
   font-size: 1rem;
@@ -90,7 +107,8 @@
   padding-left: 40px;
 }
 
-.styled-input:focus, .styled-select:focus {
+.styled-input:focus,
+.styled-select:focus {
   border-color: #007bff;
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
   outline: none;
@@ -98,6 +116,7 @@
 
 .signup-btn {
   width: 100%;
+  max-width: 600px;
   padding: 10px;
   font-size: 1rem;
   color: white;
@@ -106,6 +125,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
 .signup-btn:hover {
