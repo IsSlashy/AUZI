@@ -16,7 +16,7 @@
 
     <!-- Bouton Google via la balise de la librairie -->
     <div class="google-login">
-      <!-- On applique la conversion "$any" -->
+      <!-- On applique $any pour ignorer l'erreur d'Event DOM dans Angular -->
       <asl-google-signin-button
         (googleSignInSuccess)="onGoogleSignInSuccess($any($event))"
         (googleSignInError)="onGoogleSignInError($any($event))"
@@ -28,7 +28,7 @@
 
     <p class="separator">or use your email account</p>
 
-    <!-- Formulaire de connexion -->
+    <!-- Formulaire de connexion classique -->
     <form (ngSubmit)="connectWithAuzi()">
       <div class="form-group">
         <label for="email">Email address*</label>

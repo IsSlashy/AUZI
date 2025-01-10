@@ -8,7 +8,6 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-// Apollo
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { AUTHENTICATE_USER, GOOGLE_AUTH } from '../GraphQL/connexion';
 
@@ -29,10 +28,7 @@ interface ApolloError extends Error {
   extraInfo?: any;
 }
 
-/**
- * Déclare tes propres interfaces pour typer le callback Google
- * selon tes besoins (idToken, credential, etc.).
- */
+/** Interfaces pour le callback Google */
 interface GoogleSignInSuccessEvent {
   idToken: string;
   credential?: string;
@@ -42,6 +38,18 @@ interface GoogleSignInSuccessEvent {
 interface GoogleSignInErrorEvent {
   error: string;
   reason?: string;
+}
+
+/** Exemple : Payload possible renvoyé par authenticateUserWithGoogle */
+interface GoogleAuthPayload {
+  token: string | null;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    // ...
+  } | null;
+  isNewUser?: boolean;  // <-- indicateur si l'utilisateur est neuf
 }
 
 @Component({
@@ -80,12 +88,11 @@ export class ConnectionComponent {
   }
 
   /**
-   * Connexion via email/password
+   * Connexion classique (email/password)
    */
   async connectWithAuzi() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    // Vérification basique
     if (!this.email.trim() || !this.password.trim()) {
       this.errorMessage = 'Veuillez remplir tous les champs.';
       return;
@@ -95,11 +102,6 @@ export class ConnectionComponent {
     this.errorMessage = '';
 
     try {
-      console.log("Tentative d'authentification Auzi avec:", {
-        email: this.email,
-        password: 'HIDDEN',
-      });
-
       const result = await this.apolloClient.mutate({
         mutation: AUTHENTICATE_USER,
         variables: {
@@ -110,18 +112,13 @@ export class ConnectionComponent {
         },
       });
 
-      console.log("Réponse d'authentification:", result);
-
       const { token, user } = result.data?.authenticateUser || {};
       if (token && user) {
-        // Stockage local
         this.storeAuthenticationData(token, user);
         this.clearCredentials();
-
-        console.log("Authentification réussie, redirection vers /home");
         await this.router.navigate(['/home']);
       } else {
-        this.errorMessage = "Échec de l'authentification - Aucun token reçu.";
+        this.errorMessage = "Échec : Aucun token reçu.";
       }
     } catch (error) {
       this.handleAuthenticationError(error as ApolloError);
@@ -131,9 +128,8 @@ export class ConnectionComponent {
   }
 
   /**
-   * Connexion via Google (nouvelle API)
-   * Ici, on ne fait PLUS de this.authService.signIn()
-   * -> C'est le <asl-google-signin-button> qui gère la connexion
+   * Connexion via Google
+   * -> Gérée par le <asl-google-signin-button> (voir le template HTML).
    */
   async onGoogleSignInSuccess(event: GoogleSignInSuccessEvent) {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -142,25 +138,40 @@ export class ConnectionComponent {
       this.isLoading = true;
       this.errorMessage = '';
 
-      // L'event contient (en général) un idToken Google
       const googleToken = event.idToken;
       console.log('Google ID Token:', googleToken);
 
-      // Mutation GraphQL => authentifier le token côté back
-      const result = await this.apolloClient.mutate({
+      // Appel la mutation Google Auth
+      // (on suppose que le resolver renvoie "isNewUser" si l'utilisateur n'existe pas)
+      const { data } = await this.apolloClient.mutate({
         mutation: GOOGLE_AUTH,
         variables: { googleToken },
       });
 
-      console.log('Réponse Google Auth:', result);
+      // Exemple de structure attendue
+      const payload = data?.authenticateUserWithGoogle as GoogleAuthPayload;
 
-      const { token, user } = result.data?.authenticateUserWithGoogle || {};
+      if (!payload) {
+        this.errorMessage = "Réponse invalide de l'API Google Auth.";
+        return;
+      }
+
+      const { token, user, isNewUser } = payload;
+
+      // 1) S'il est neuf -> rediriger vers /register
+      if (isNewUser) {
+        console.log('Utilisateur Google non existant : redirection vers /register');
+        await this.router.navigate(['/register']);
+        return;
+      }
+
+      // 2) Sinon, s'il y a un token + user => redirection vers /home
       if (token && user) {
         this.storeAuthenticationData(token, user);
-        console.log("Authentification Google réussie, redirection vers /home");
+        console.log('Authentification Google réussie, redirection vers /home');
         await this.router.navigate(['/home']);
       } else {
-        this.errorMessage = "Échec de l'authentification Google - Aucun token reçu.";
+        this.errorMessage = "Échec Google - Aucun token ou user renvoyé.";
       }
     } catch (error) {
       console.error('Erreur lors de la connexion Google :', error);
@@ -171,27 +182,18 @@ export class ConnectionComponent {
   }
 
   onGoogleSignInError(event: GoogleSignInErrorEvent) {
-    // Callback appelé en cas d'échec GSI
     console.error('Erreur Google Sign-In:', event);
     this.errorMessage = 'Erreur lors de la connexion Google.';
   }
 
   /**
-   * Stockage local du token et ID user
+   * Stocker le token + user en localStorage
    */
   private storeAuthenticationData(token: string, user: any) {
     if (isPlatformBrowser(this.platformId)) {
-      console.log("Stockage des informations d'authentification");
       localStorage.setItem('access-token', token);
-      localStorage.setItem('user-id', user.id);  // <-- ID dynamique
+      localStorage.setItem('user-id', user.id);
       localStorage.setItem('user-name', `${user.firstName} ${user.lastName}`);
-
-      // Vérification
-      console.log('Vérification de localStorage:', {
-        token: localStorage.getItem('access-token'),
-        userId: localStorage.getItem('user-id'),
-        userName: localStorage.getItem('user-name'),
-      });
     }
   }
 
@@ -204,7 +206,7 @@ export class ConnectionComponent {
     console.error("Détails de l'erreur d'authentification:", {
       message: error.message,
       networkError: error.networkError,
-      graphQLErrors: error.graphQLErrors?.map((err) => ({
+      graphQLErrors: error.graphQLErrors?.map(err => ({
         message: err.message,
         path: err.path,
         extensions: err.extensions,
@@ -213,7 +215,7 @@ export class ConnectionComponent {
 
     this.errorMessage =
       error.graphQLErrors?.[0]?.message ||
-      'Erreur lors de la connexion. Veuillez réessayer.';
+      'Erreur lors de la connexion. Réessayez.';
   }
 
   // ---- Méthodes statiques utiles (optionnel) ----
