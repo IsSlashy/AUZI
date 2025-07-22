@@ -6,11 +6,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  standalone: true,
-  imports: [CommonModule, RouterModule, NavbarComponent],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    imports: [CommonModule, RouterModule, NavbarComponent]
 })
 export class AppComponent implements OnInit {
   isLoading = true;

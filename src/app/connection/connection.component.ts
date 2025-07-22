@@ -53,12 +53,11 @@ interface GoogleAuthPayload {
 }
 
 @Component({
-  standalone: true,
-  selector: 'app-connection',
-  templateUrl: './connection.component.html',
-  styleUrls: ['./connection.component.scss'],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, FormsModule, RouterModule],
+    selector: 'app-connection',
+    templateUrl: './connection.component.html',
+    styleUrls: ['./connection.component.scss'],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [CommonModule, FormsModule, RouterModule]
 })
 export class ConnectionComponent {
   email = '';

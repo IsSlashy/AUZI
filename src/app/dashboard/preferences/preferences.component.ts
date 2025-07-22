@@ -5,11 +5,10 @@ import { Apollo } from 'apollo-angular';
 import { gql } from 'graphql-tag';
 
 @Component({
-  selector: 'app-preferences',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './preferences.component.html',
-  styleUrls: ['./preferences.component.scss'],
+    selector: 'app-preferences',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './preferences.component.html',
+    styleUrls: ['./preferences.component.scss']
 })
 export class PreferencesComponent implements OnInit {
   preferences = {

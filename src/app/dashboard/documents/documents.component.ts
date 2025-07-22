@@ -13,11 +13,10 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = './assets/pdf.worker.min.js';
 
 
 @Component({
-  selector: 'app-documents',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './documents.component.html',
-  styleUrls: ['./documents.component.scss'],
+    selector: 'app-documents',
+    imports: [CommonModule],
+    templateUrl: './documents.component.html',
+    styleUrls: ['./documents.component.scss']
 })
 export class DocumentsComponent {
   // Liste de documents (chacun possède un id, un name et son content en base64)

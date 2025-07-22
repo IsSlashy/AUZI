@@ -4,11 +4,10 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChatPopupComponent } from '../chat-popup/chat-popup.component';
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [ChatPopupComponent, CommonModule],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+    selector: 'app-navbar',
+    imports: [ChatPopupComponent, CommonModule],
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements AfterViewInit {
   @ViewChild('chatPopup') chatPopup!: ChatPopupComponent;

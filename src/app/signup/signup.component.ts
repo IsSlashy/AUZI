@@ -30,11 +30,10 @@ interface RegisterUserInput {
 }
 
 @Component({
-  selector: 'app-signup',
-  standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+    selector: 'app-signup',
+    imports: [FormsModule, CommonModule, RouterModule],
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
   firstName = '';

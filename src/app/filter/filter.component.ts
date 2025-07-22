@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-filter',
-  standalone: true,
-  imports: [],
-  templateUrl: './filter.component.html',
-  styleUrl: './filter.component.scss'
+    selector: 'app-filter',
+    imports: [],
+    templateUrl: './filter.component.html',
+    styleUrl: './filter.component.scss'
 })
 export class FilterComponent {
 

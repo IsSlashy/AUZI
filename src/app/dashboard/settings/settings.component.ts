@@ -5,11 +5,10 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { GET_USER_SETTINGS, UPDATE_USER_SETTINGS } from '../../GraphQL/settings';
 
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss'],
+    selector: 'app-settings',
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
   // Formulaire local

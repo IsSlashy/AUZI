@@ -6,11 +6,10 @@ import { GET_SUBSCRIPTION } from '../../GraphQL/stripe';
 import { Subscription } from '../../types/stripe.types';
 
 @Component({
-  selector: 'app-subscription',
-  standalone: true,
-  imports: [CommonModule], // Ajout de CommonModule pour les pipes Angular comme 'date'
-  templateUrl: './subscription.component.html',
-  styleUrls: ['./subscription.component.scss'],
+    selector: 'app-subscription',
+    imports: [CommonModule], // Ajout de CommonModule pour les pipes Angular comme 'date'
+    templateUrl: './subscription.component.html',
+    styleUrls: ['./subscription.component.scss']
 })
 export class SubscriptionComponent implements OnInit {
   subscriptions: Subscription[] = []; // Utilisation correcte du type Subscription
