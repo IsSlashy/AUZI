@@ -1,47 +1,43 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-angular';
 
+/* ---------- Fragments réutilisables ---------- */
+export const USER_MINI = gql`
+  fragment UserMini on User {
+    id
+    firstName
+    lastName
+    email
+  }
+`;
+
+/* ---------- Mutations ---------- */
 export const REGISTER_USER = gql`
   mutation RegisterUser(
-    $firstName: String!,
-    $lastName: String!,
-    $email: String!,
-    $password: String!,
-    $phoneNumber: String,
-    $address: String!,
-    $zipcode: String!,
-    $age: Int!,
+    $firstName: String!
+    $lastName: String!
+    $email: String!
+    $password: String!
+    $phoneNumber: String
+    $address: String!
+    $zipcode: String!
+    $age: Int!
     $gender: String!
   ) {
     registerUser(
-      firstName: $firstName,
-      lastName: $lastName,
-      email: $email,
-      password: $password,
-      phoneNumber: $phoneNumber,
-      address: $address,
-      zipcode: $zipcode,
-      age: $age,
+      firstName: $firstName
+      lastName: $lastName
+      email: $email
+      password: $password
+      phoneNumber: $phoneNumber
+      address: $address
+      zipcode: $zipcode
+      age: $age
       gender: $gender
     ) {
-      id
-      firstName
-      lastName
-      email
+      ...UserMini
     }
   }
-`;
-export const GOOGLE_AUTH = gql`
-  mutation AuthenticateUserWithGoogle($googleToken: String!) {
-    authenticateUserWithGoogle(googleToken: $googleToken) {
-      token
-      user {
-        id
-        email
-        firstName
-        lastName
-      }
-    }
-  }
+  ${USER_MINI}
 `;
 
 export const AUTHENTICATE_USER = gql`
@@ -49,11 +45,25 @@ export const AUTHENTICATE_USER = gql`
     authenticateUser(input: $input) {
       token
       user {
-        id
-        firstName
-        lastName
-        email
+        ...UserMini
       }
     }
   }
+  ${USER_MINI}
+`;
+
+/**
+ * ➜ OPTIONNEL : à utiliser UNIQUEMENT si la mutation existe dans ton schéma backend.
+ *    Sinon, commente ou supprime cette mutation.
+ */
+export const AUTHENTICATE_USER_WITH_GOOGLE = gql`
+  mutation AuthenticateUserWithGoogle($googleToken: String!) {
+    authenticateUserWithGoogle(googleToken: $googleToken) {
+      token
+      user {
+        ...UserMini
+      }
+    }
+  }
+  ${USER_MINI}
 `;
