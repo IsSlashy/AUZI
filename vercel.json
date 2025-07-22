@@ -2,9 +2,9 @@
   "version": 2,
   "outputDirectory": "dist/auzi-front/browser",
   "installCommand": "npm install --legacy-peer-deps",
-  "buildCommand": "ng build --configuration production",
-  "routes": [
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "buildCommand": "ng build --configuration production && cp dist/auzi-front/browser/index.csr.html dist/auzi-front/browser/index.html",
+  "rewrites": [
+    { "source": "/assets/(.*)", "destination": "/assets/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
