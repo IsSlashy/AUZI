@@ -1,9 +1,6 @@
 {
     "installCommand": "npm install --legacy-peer-deps",
     "buildCommand": "ng build --configuration=vercel",
-    "outputDirectory": "dist/auzi-front/browser",
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/index.html" }
-    ]
+    "outputDirectory": "dist/auzi-front/browser"
   }
   
