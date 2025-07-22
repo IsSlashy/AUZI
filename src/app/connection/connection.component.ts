@@ -8,24 +8,30 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-import { ApolloClient, InMemoryCache, HttpLink, NormalizedCacheObject } from '@apollo/client/core';
-import { AUTHENTICATE_USER, AUTHENTICATE_USER_WITH_GOOGLE } from '../GraphQL/connexion';
+import {
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  NormalizedCacheObject,
+} from '@apollo/client/core';
 
-// Social Auth (si tu l'utilises vraiment)
+import {
+  AUTHENTICATE_USER,
+  AUTHENTICATE_USER_WITH_GOOGLE,
+} from '../GraphQL/connexion';
+
+// (Optionnel) Si tu n'utilises pas vraiment ce service, supprime-le des deps
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 
-/* ============================== */
-/*            TYPES               */
-/* ============================== */
-interface GraphQLError {
+/* ─────────── TYPES ─────────── */
+interface GQLError {
   message: string;
   path?: ReadonlyArray<string | number>;
   extensions?: Record<string, unknown>;
 }
-
 interface ApolloErr extends Error {
-  graphQLErrors?: readonly GraphQLError[];
-  networkError?: Error | null;
+  graphQLErrors?: readonly GQLError[];
+  networkError?: any;
   extraInfo?: unknown;
 }
 
@@ -37,20 +43,17 @@ interface AuthUser {
 }
 
 interface AuthPayload {
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   user: AuthUser | null;
+  isNewUser?: boolean;
 }
 
 interface AuthResponse {
   authenticateUser: AuthPayload;
 }
-
-// --- Google ---
-interface GoogleAuthPayload extends AuthPayload {
-  isNewUser?: boolean;
-}
 interface GoogleAuthResponse {
-  authenticateUserWithGoogle: GoogleAuthPayload;
+  authenticateUserWithGoogle: AuthPayload;
 }
 
 interface GoogleSignInSuccessEvent {
@@ -63,8 +66,7 @@ interface GoogleSignInErrorEvent {
   reason?: string;
 }
 
-/* ============================== */
-
+/* ─────────── COMPONENT ─────────── */
 @Component({
   selector: 'app-connection',
   standalone: true,
@@ -83,25 +85,20 @@ export class ConnectionComponent {
 
   constructor(
     private router: Router,
-    private authService: SocialAuthService, // si non utilisé, retire-le
-    @Inject(PLATFORM_ID) private platformId: Object
+    private authService: SocialAuthService,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.apollo = new ApolloClient({
       link: new HttpLink({
-        uri: 'https://api2.auzi.fr/graphql', // ou environment.apiUrl
-        fetchOptions: {
-          mode: 'cors',
-          credentials: 'include',
-        },
+        uri: 'https://api2.auzi.fr/graphql', // remplace par environment.apiUrl si tu veux
+        fetchOptions: { mode: 'cors', credentials: 'include' },
       }),
       cache: new InMemoryCache(),
       connectToDevTools: !this.isServer(),
     });
   }
 
-  /* ============================== */
-  /*   Connexion email / password   */
-  /* ============================== */
+  /* ── Connexion email/password ── */
   async connectWithAuzi(): Promise<void> {
     if (this.isServer()) return;
 
@@ -110,51 +107,44 @@ export class ConnectionComponent {
       return;
     }
 
-    this.isLoading = true;
-    this.errorMessage = '';
-
+    this.toggleLoading(true);
     try {
       const { data } = await this.apollo.mutate<AuthResponse>({
         mutation: AUTHENTICATE_USER,
         variables: {
-          input: {
-            email: this.email,
-            password: this.password,
-          },
+          input: { email: this.email.trim(), password: this.password },
         },
         fetchPolicy: 'no-cache',
       });
 
       const payload = data?.authenticateUser;
-      if (payload?.token && payload.user) {
-        this.storeAuth(payload.token, payload.user);
+      if (payload?.accessToken && payload.user) {
+        this.storeAuth(payload.accessToken, payload.refreshToken, payload.user);
         this.clearCredentials();
         await this.router.navigate(['/home']);
       } else {
-        this.errorMessage = "Échec : aucun token reçu.";
+        this.errorMessage = "Échec : aucun accessToken reçu.";
       }
     } catch (err) {
       this.handleAuthError(err as ApolloErr);
     } finally {
-      this.isLoading = false;
+      this.toggleLoading(false);
     }
   }
 
-  /* ============================== */
-  /*        Connexion Google        */
-  /*  (appelée par le bouton GSI)   */
-  /* ============================== */
+  /* ── Connexion Google (GSI) ── */
   async onGoogleSignInSuccess(event: GoogleSignInSuccessEvent): Promise<void> {
     if (this.isServer()) return;
 
-    try {
-      this.isLoading = true;
-      this.errorMessage = '';
+    this.toggleLoading(true);
+    this.errorMessage = '';
 
+    try {
       const googleToken = event.idToken;
+
       const { data } = await this.apollo.mutate<GoogleAuthResponse>({
         mutation: AUTHENTICATE_USER_WITH_GOOGLE,
-        variables: { googleToken },
+        variables: { input: { googleToken } },
         fetchPolicy: 'no-cache',
       });
 
@@ -164,24 +154,22 @@ export class ConnectionComponent {
         return;
       }
 
-      const { token, user, isNewUser } = payload;
-
-      if (isNewUser) {
+      if (payload.isNewUser) {
         await this.router.navigate(['/register']);
         return;
       }
 
-      if (token && user) {
-        this.storeAuth(token, user);
+      if (payload.accessToken && payload.user) {
+        this.storeAuth(payload.accessToken, payload.refreshToken, payload.user);
         await this.router.navigate(['/home']);
       } else {
-        this.errorMessage = 'Échec Google : token ou utilisateur manquant.';
+        this.errorMessage = 'Échec Google : accessToken ou user manquant.';
       }
     } catch (err) {
       console.error('Erreur Google:', err);
       this.errorMessage = 'Erreur lors de la connexion via Google.';
     } finally {
-      this.isLoading = false;
+      this.toggleLoading(false);
     }
   }
 
@@ -190,15 +178,17 @@ export class ConnectionComponent {
     this.errorMessage = 'Erreur lors de la connexion Google.';
   }
 
-  /* ============================== */
-  /*          Utils localStorage    */
-  /* ============================== */
-  private storeAuth(token: string, user: AuthUser): void {
-    if (!this.isServer()) {
-      localStorage.setItem('access-token', token);
-      localStorage.setItem('user-id', user.id);
-      localStorage.setItem('user-name', `${user.firstName} ${user.lastName}`);
-    }
+  /* ── Utils ── */
+  private storeAuth(
+    accessToken: string,
+    refreshToken: string | null,
+    user: AuthUser
+  ): void {
+    if (this.isServer()) return;
+    localStorage.setItem('access-token', accessToken);
+    if (refreshToken) localStorage.setItem('refresh-token', refreshToken);
+    localStorage.setItem('user-id', user.id);
+    localStorage.setItem('user-name', `${user.firstName} ${user.lastName}`);
   }
 
   private clearCredentials(): void {
@@ -226,7 +216,11 @@ export class ConnectionComponent {
     return !isPlatformBrowser(this.platformId);
   }
 
-  /* Méthodes statiques : évite d’utiliser PLATFORM_ID statiquement */
+  private toggleLoading(state: boolean): void {
+    this.isLoading = state;
+  }
+
+  /* Static helpers */
   static getStoredToken(): string | null {
     try {
       return typeof window !== 'undefined'
