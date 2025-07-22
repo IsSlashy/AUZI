@@ -1,52 +1,27 @@
+// src/signup/signup.component.ts
 import { Component } from '@angular/core';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-import { ApolloClient, InMemoryCache, HttpLink, NormalizedCacheObject } from '@apollo/client/core';
 import { REGISTER_USER } from '../GraphQL/connexion';
 
-// ---------- Types ----------
-interface RegisterUserVars {
+interface RegisterPayload {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  phoneNumber?: string | null;
-  address: string;
-  zipcode: string;
-  age: number;
-  gender: string;
 }
-
-interface RegisterUserData {
-  registerUser: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
+interface RegisterResponse {
+  registerUser: RegisterPayload;
 }
-
-interface GraphQLErrorLike {
-  message: string;
-  path?: ReadonlyArray<string | number>;
-  extensions?: Record<string, any>;
-}
-
-interface ApolloErrorLike extends Error {
-  graphQLErrors?: readonly GraphQLErrorLike[];
-  networkError?: Error | null;
-  extraInfo?: any;
-}
-// ---------------------------
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
   imports: [FormsModule, CommonModule, RouterModule],
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
   firstName = '';
@@ -57,86 +32,58 @@ export class SignupComponent {
   phoneNumber = '';
   address = '';
   zipcode = '';
-  age: number | null = null;
+  age = 0;
   gender = '';
 
-  isLoading = false;
-  errorMessage = '';
-
-  private apollo: ApolloClient<NormalizedCacheObject>;
+  private apollo: ApolloClient<any>;
 
   constructor(private router: Router) {
     this.apollo = new ApolloClient({
       link: new HttpLink({
-        uri: 'https://api2.auzi.fr/graphql', // idéalement environment.apiUrl + '/graphql'
+        uri: 'https://api2.auzi.fr/graphql',
         fetchOptions: { mode: 'cors', credentials: 'include' },
       }),
       cache: new InMemoryCache(),
-      connectToDevTools: false,
     });
   }
 
-  async signup(): Promise<void> {
-    this.errorMessage = '';
-
+  async signup() {
     if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Les mots de passe ne correspondent pas.';
+      alert('Passwords do not match');
+      return;
+    }
+    if (!this.firstName || !this.lastName || !this.email || !this.password ||
+        !this.address || !this.zipcode || !this.age || !this.gender) {
+      alert('Please fill in all required fields');
       return;
     }
 
-    if (
-      !this.firstName.trim() ||
-      !this.lastName.trim() ||
-      !this.email.trim() ||
-      !this.password ||
-      !this.address.trim() ||
-      !this.zipcode.trim() ||
-      this.age == null ||
-      !this.gender.trim()
-    ) {
-      this.errorMessage = 'Veuillez remplir tous les champs obligatoires.';
-      return;
-    }
-
-    const variables: RegisterUserVars = {
-      firstName: this.firstName.trim(),
-      lastName: this.lastName.trim(),
-      email: this.email.trim(),
-      password: this.password,
-      phoneNumber: this.phoneNumber.trim() || undefined,
-      address: this.address.trim(),
-      zipcode: this.zipcode.trim(),
-      age: Number(this.age),
-      gender: this.gender.trim(),
-    };
-
-    this.isLoading = true;
     try {
-      const { data } = await this.apollo.mutate<RegisterUserData, RegisterUserVars>({
+      const { data } = await this.apollo.mutate<RegisterResponse>({
         mutation: REGISTER_USER,
-        variables,
+        variables: {
+          firstName: this.firstName.trim(),
+          lastName: this.lastName.trim(),
+          email: this.email.trim(),
+          password: this.password,
+          phoneNumber: this.phoneNumber.trim() || undefined,
+          address: this.address.trim(),
+          zipcode: this.zipcode.trim(),
+          age: Number(this.age),
+          gender: this.gender.trim()
+        },
         fetchPolicy: 'no-cache',
       });
 
       if (data?.registerUser) {
-        alert('Inscription réussie ! Vous pouvez vous connecter.');
+        alert('Registration successful! Redirecting to login page.');
         this.router.navigate(['/login']);
       } else {
-        this.errorMessage = 'Échec de l’inscription. Réessayez.';
+        alert('Registration failed. Please try again.');
       }
-    } catch (err) {
-      const e = err as ApolloErrorLike;
-      console.error('Erreur inscription:', {
-        message: e.message,
-        network: e.networkError,
-        gql: e.graphQLErrors,
-      });
-      this.errorMessage =
-        e.graphQLErrors?.[0]?.message ||
-        e.networkError?.message ||
-        'Erreur lors de l’inscription.';
-    } finally {
-      this.isLoading = false;
+    } catch (e: any) {
+      console.error('Registration error:', e);
+      alert('Registration failed: ' + e.message);
     }
   }
 }
