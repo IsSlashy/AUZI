@@ -10,7 +10,7 @@ import { setContext } from '@apollo/client/link/context';
 export class ApolloService {
   constructor(private apollo: Apollo, private httpLink: HttpLink) {
     // Création du lien HTTP
-    const http = httpLink.create({ uri: 'https://api.auzi.fr/graphql' });
+    const http = httpLink.create({ uri: 'https://api2.auzi.fr/graphql' });
 
     // Middleware pour ajouter dynamiquement le token JWT
     const auth = setContext(() => {

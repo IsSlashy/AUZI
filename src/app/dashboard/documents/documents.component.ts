@@ -130,7 +130,7 @@ export class DocumentsComponent {
       userId,
     });
 
-    fetch('https://api.auzi.fr/upload', {
+    fetch('https://api2.auzi.fr/upload', {
       method: 'POST',
       body: formData,
     })

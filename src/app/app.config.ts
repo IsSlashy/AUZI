@@ -20,7 +20,7 @@ function createApollo(httpLink: HttpLink) {
   return {
     cache: new InMemoryCache(),
     link: httpLink.create({
-      uri: 'https://api.auzi.fr/graphql',
+      uri: 'https://api2.auzi.fr/graphql',
       withCredentials: true,
     }),
   };
