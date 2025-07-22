@@ -1,6 +1,6 @@
 {
     "installCommand": "npm install --legacy-peer-deps",
-    "buildCommand": "ng build --configuration production",
+    "buildCommand": "ng build --configuration production --no-prerender",
     "outputDirectory": "dist/auzi-front/browser"
   }
   
